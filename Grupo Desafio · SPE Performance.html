@@ -1,0 +1,1690 @@
+<!DOCTYPE html>
+<!-- saved from url=(0047)https://monitoramentoconsultoresgd.netlify.app/ -->
+<html lang="pt-BR"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grupo Desafio · SPE Performance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link href="./Grupo Desafio · SPE Performance_files/css2" rel="stylesheet">
+<script src="./Grupo Desafio · SPE Performance_files/chart.umd.js.download"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+--bg:#0d0f14;--bg2:#13161e;--bg3:#1a1e28;--bg4:#222736;--bd:#2a3045;--bd2:#3a4560;
+--tx:#e8ecf5;--tx2:#8892aa;--tx3:#4a5570;
+--ac:#4f8ef7;--ac2:#2d5cc8;--ac3:#7ab3ff;
+--gr:#3ecf8e;--gr2:#1a8c5a;--rd:#f76e6e;--rd2:#c43f3f;
+--am:#f7c44f;--am2:#c49030;--pu:#a78bfa;--tl:#2dd4bf;
+--cr:12px;--sr:8px;
+--fh:'Syne',sans-serif;--fb:'DM Sans',sans-serif;
+}
+body{background:var(--bg);color:var(--tx);font-family:var(--fb);font-size:14px;line-height:1.5;min-height:100vh}
+.app{display:flex;flex-direction:column;min-height:100vh}
+
+/* TOPBAR */
+.bar{background:var(--bg2);border-bottom:1px solid var(--bd);padding:0 20px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.nav{display:flex;gap:3px;flex-wrap:wrap}
+.nb{background:none;border:none;color:var(--tx2);font-family:var(--fb);font-size:12px;padding:5px 12px;border-radius:var(--sr);cursor:pointer;transition:all .15s;white-space:nowrap}
+.nb:hover{background:var(--bg3);color:var(--tx)}.nb.on{background:var(--bg4);color:var(--ac);font-weight:500}
+.live{background:#1a3a1a;color:var(--gr);font-size:11px;padding:2px 8px;border-radius:20px;border:1px solid var(--gr2)}
+
+/* LAYOUT */
+.wrap{flex:1;padding:20px;max-width:1380px;margin:0 auto;width:100%}
+.view{display:none}.view.on{display:block}
+
+/* CARDS STAT */
+.sg5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-bottom:20px}
+.sg4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:20px}
+.sc{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--cr);padding:16px;position:relative;overflow:hidden}
+.sc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.sc.bl::before{background:var(--ac)}.sc.gr::before{background:var(--gr)}.sc.am::before{background:var(--am)}
+.sc.pu::before{background:var(--pu)}.sc.tl::before{background:var(--tl)}
+.sl{font-size:10px;color:var(--tx3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:5px}
+.sv{font-family:var(--fh);font-size:24px;font-weight:700;margin-bottom:3px}
+.ss{font-size:11px;color:var(--tx2)}.up{color:var(--gr)}.dn{color:var(--rd)}
+
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1.6fr 1fr;gap:18px;margin-bottom:20px}
+.g2e{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:20px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;margin-bottom:20px}
+.cd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--cr);padding:18px}
+.sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.st{font-family:var(--fh);font-size:14px;font-weight:700;color:var(--tx)}
+.ss2{font-size:11px;color:var(--tx3);margin-top:2px}
+.cw{position:relative;width:100%;height:230px}
+
+/* TABELAS */
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{text-align:left;padding:8px 9px;color:var(--tx3);font-size:10px;text-transform:uppercase;letter-spacing:.6px;border-bottom:1px solid var(--bd);font-weight:500}
+td{padding:8px 9px;border-bottom:1px solid var(--bd);color:var(--tx2);vertical-align:middle}
+tr:last-child td{border-bottom:none}tr:hover td{background:var(--bg3)}
+.nc{color:var(--tx);font-weight:500}
+
+/* PILLS */
+.pl{display:inline-block;padding:2px 7px;border-radius:20px;font-size:10px;font-weight:500}
+.pg{background:#1a3a2a;color:var(--gr);border:1px solid var(--gr2)}
+.pr{background:#3a1a1a;color:var(--rd);border:1px solid var(--rd2)}
+.pa{background:#3a2a0a;color:var(--am);border:1px solid var(--am2)}
+.pz{background:var(--bg3);color:var(--tx2);border:1px solid var(--bd)}
+.pt{background:#0a2a28;color:var(--tl);border:1px solid #0f5550}
+
+/* MESES */
+.mc{padding:4px 10px;border-radius:var(--sr);border:1px solid var(--bd);font-size:11px;cursor:pointer;transition:all .15s;background:var(--bg3);color:var(--tx2)}
+.mc:hover{border-color:var(--ac);color:var(--ac)}.mc.on{background:var(--ac2);color:#fff;border-color:var(--ac)}
+
+/* CONSULTORES */
+.cg{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px;margin-bottom:18px}
+.cc{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--cr);padding:14px;cursor:pointer;transition:all .2s}
+.cc:hover{border-color:var(--ac);transform:translateY(-2px)}.cc.sel{border-color:var(--ac);background:var(--bg3)}
+.av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:12px;font-weight:700;flex-shrink:0}
+.ck4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;margin-top:8px}
+.ck{background:var(--bg3);border-radius:var(--sr);padding:6px 4px;text-align:center}
+.ck .v{font-family:var(--fh);font-size:14px;font-weight:700}.ck .l{font-size:9px;color:var(--tx3);margin-top:1px}
+.ab{height:3px;background:var(--bd);border-radius:2px;margin-top:8px;overflow:hidden}.af{height:100%;border-radius:2px}
+
+/* DETALHE CONSULTOR */
+.dp{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--cr);padding:20px;margin-top:16px}
+.dk{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:16px}
+.kb{background:var(--bg3);border-radius:var(--sr);padding:11px}
+.kv{font-family:var(--fh);font-size:18px;font-weight:700}.kl{font-size:10px;color:var(--tx3);margin-top:3px;text-transform:uppercase;letter-spacing:.4px}
+
+/* FORMULÁRIOS */
+.lf{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--cr);padding:20px}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.fg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px}
+.fm{display:flex;flex-direction:column;gap:4px}
+.fm label{font-size:10px;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px}
+.fm select,.fm input,.fm textarea{background:var(--bg3);border:1px solid var(--bd);border-radius:var(--sr);padding:8px 10px;color:var(--tx);font-family:var(--fb);font-size:13px;outline:none;transition:border .15s;width:100%}
+.fm select:focus,.fm input:focus,.fm textarea:focus{border-color:var(--ac)}
+.fm select option{background:var(--bg3)}
+.bp{background:var(--ac2);border:1px solid var(--ac);color:#fff;font-family:var(--fb);font-size:13px;font-weight:500;padding:8px 20px;border-radius:var(--sr);cursor:pointer;transition:all .15s}
+.bp:hover{background:var(--ac)}
+.bs{background:var(--bg3);border:1px solid var(--bd);color:var(--tx2);font-family:var(--fb);font-size:13px;padding:8px 20px;border-radius:var(--sr);cursor:pointer}
+.bd-btn{background:var(--bg3);border:1px solid var(--rd2);color:var(--rd);font-family:var(--fb);font-size:12px;padding:6px 14px;border-radius:var(--sr);cursor:pointer;transition:all .15s}
+.bd-btn:hover{background:#3a1a1a}
+.brow{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.dv{height:1px;background:var(--bd);margin:14px 0}
+.fsl{font-size:11px;font-weight:500;color:var(--tx2);margin-bottom:10px}
+.ib{background:var(--bg3);border:1px solid var(--bd2);border-left:3px solid var(--ac);border-radius:var(--sr);padding:9px 13px;font-size:12px;color:var(--tx2);margin-bottom:14px}
+
+/* FILTROS */
+.fs2{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--sr);padding:6px 10px;color:var(--tx);font-family:var(--fb);font-size:12px;outline:none;cursor:pointer}
+.si{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--sr);padding:6px 10px;color:var(--tx);font-family:var(--fb);font-size:12px;outline:none;min-width:170px}
+.si::placeholder{color:var(--tx3)}
+
+/* TABS */
+.tr2{display:flex;gap:3px;margin-bottom:16px;border-bottom:1px solid var(--bd)}
+.tb{background:none;border:none;color:var(--tx3);font-family:var(--fb);font-size:12px;padding:6px 13px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s}
+.tb:hover{color:var(--tx)}.tb.on{color:var(--ac);border-bottom-color:var(--ac)}
+
+/* GESTÃO DE CONSULTORES */
+.cons-lista{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.cons-item{display:flex;align-items:center;gap:12px;background:var(--bg3);border:1px solid var(--bd);border-radius:var(--sr);padding:10px 14px}
+.cons-item-nome{flex:1;color:var(--tx);font-size:13px;font-weight:500}
+.cons-item-meta{font-size:11px;color:var(--tx3);margin-top:2px}
+.cons-item-actions{display:flex;gap:6px}
+.icon-btn{background:none;border:1px solid var(--bd);color:var(--tx3);font-size:11px;padding:4px 10px;border-radius:var(--sr);cursor:pointer;transition:all .15s}
+.icon-btn:hover{border-color:var(--ac);color:var(--ac)}
+.icon-btn.del:hover{border-color:var(--rd2);color:var(--rd)}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:#00000088;z-index:200;display:none;align-items:center;justify-content:center}
+.modal-overlay.on{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--bd2);border-radius:var(--cr);padding:28px;width:100%;max-width:440px;margin:20px}
+.modal-title{font-family:var(--fh);font-size:17px;font-weight:700;margin-bottom:20px;color:var(--tx)}
+.modal-actions{display:flex;gap:10px;margin-top:20px;justify-content:flex-end}
+
+/* TOAST */
+.toast{position:fixed;bottom:20px;right:20px;background:var(--bg2);border:1px solid var(--gr);color:var(--tx);padding:10px 16px;border-radius:var(--sr);font-size:12px;font-weight:500;opacity:0;transform:translateY(8px);transition:all .3s;z-index:999;pointer-events:none}
+.toast.on{opacity:1;transform:translateY(0)}
+
+/* MODAL PLANEJAMENTO ANUAL */
+.plan-overlay{position:fixed;inset:0;background:#00000099;z-index:300;display:none;align-items:flex-start;justify-content:center;overflow-y:auto;padding:20px}
+.plan-overlay.on{display:flex}
+.plan-modal{background:var(--bg2);border:1px solid var(--bd2);border-radius:var(--cr);width:100%;max-width:900px;margin:auto}
+.plan-header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--bd);position:sticky;top:0;background:var(--bg2);z-index:2;border-radius:var(--cr) var(--cr) 0 0}
+.plan-header-left{display:flex;flex-direction:column;gap:3px}
+.plan-header-title{font-family:var(--fh);font-size:17px;font-weight:700;color:var(--tx)}
+.plan-header-sub{font-size:12px;color:var(--tx3)}
+.plan-close{background:none;border:1px solid var(--bd);color:var(--tx2);font-size:18px;width:32px;height:32px;border-radius:var(--sr);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0}
+.plan-close:hover{border-color:var(--rd2);color:var(--rd)}
+.plan-body{padding:20px 24px}
+.plan-cons-row{display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+.plan-mes-tabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--bd)}
+.plan-mes-tab{padding:5px 12px;border-radius:var(--sr);border:1px solid var(--bd);font-size:12px;cursor:pointer;background:var(--bg3);color:var(--tx2);transition:all .15s;font-family:var(--fh)}
+.plan-mes-tab:hover{border-color:var(--ac);color:var(--ac)}
+.plan-mes-tab.on{background:var(--ac2);color:#fff;border-color:var(--ac)}
+.plan-mes-tab.tem-dados{border-color:var(--gr2);color:var(--gr)}
+.plan-mes-tab.tem-dados.on{background:var(--ac2);color:#fff;border-color:var(--ac)}
+.plan-mes-content{display:none}.plan-mes-content.on{display:block}
+.plan-mes-title{font-family:var(--fh);font-size:15px;font-weight:700;color:var(--tx);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.plan-semanas{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.plan-semana{background:var(--bg3);border:1px solid var(--bd);border-radius:var(--sr);padding:14px}
+.plan-semana-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.plan-semana-label{font-size:12px;font-weight:500;color:var(--tx2)}
+.plan-semana-period{font-size:10px;color:var(--tx3);background:var(--bg4);padding:2px 7px;border-radius:4px}
+.plan-semana-fields{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:8px}
+.plan-totais{background:var(--bg4);border-radius:var(--sr);padding:12px 14px;display:flex;gap:20px;flex-wrap:wrap;margin-bottom:16px}
+.plan-total-item{display:flex;flex-direction:column;gap:2px}
+.plan-total-val{font-family:var(--fh);font-size:17px;font-weight:700}
+.plan-total-lbl{font-size:10px;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px}
+.plan-nav{display:flex;align-items:center;justify-content:space-between;padding-top:14px;border-top:1px solid var(--bd)}
+.btn-plan-nav{background:var(--bg3);border:1px solid var(--bd);color:var(--tx2);font-family:var(--fb);font-size:12px;padding:7px 16px;border-radius:var(--sr);cursor:pointer;transition:all .15s}
+.btn-plan-nav:hover{border-color:var(--bd2);color:var(--tx)}
+.btn-plan-nav:disabled{opacity:.3;cursor:not-allowed}
+.plan-footer{padding:16px 24px;border-top:1px solid var(--bd);display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+.btn-plan-abrir{background:var(--bg3);border:1px solid var(--tl);color:var(--tl);font-family:var(--fh);font-size:12px;font-weight:600;padding:8px 18px;border-radius:var(--sr);cursor:pointer;transition:all .15s;letter-spacing:.3px}
+.btn-plan-abrir:hover{background:#0a2a28;color:var(--tl)}
+@media(max-width:600px){.plan-semana-fields{grid-template-columns:1fr 1fr}.plan-overlay{padding:10px}.plan-body{padding:14px 16px}.plan-header{padding:14px 16px}}
+
+.es{text-align:center;padding:30px;color:var(--tx3);font-size:12px}
+.lr{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:8px;font-size:11px;color:var(--tx2)}
+.li{display:flex;align-items:center;gap:4px}.lsq{width:9px;height:9px;border-radius:2px}
+
+/* PAINEL ANUAL */
+.anual-panel{display:none;margin-top:4px}
+.anual-panel.on{display:block}
+.anual-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:20px}
+.anual-mes-card{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--cr);padding:14px;position:relative;overflow:hidden;transition:border-color .15s}
+.anual-mes-card:hover{border-color:var(--bd2)}
+.anual-mes-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--bd)}
+.anual-mes-card.ok::before{background:var(--gr)}
+.anual-mes-card.med::before{background:var(--am)}
+.anual-mes-card.low::before{background:var(--rd)}
+.anual-mes-nome{font-family:var(--fh);font-size:13px;font-weight:700;color:var(--tx);margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
+.anual-mes-badge{font-size:10px;font-weight:500;padding:2px 7px;border-radius:20px}
+.badge-ok{background:#1a3a2a;color:var(--gr);border:1px solid var(--gr2)}
+.badge-med{background:#3a2a0a;color:var(--am);border:1px solid var(--am2)}
+.badge-low{background:#3a1a1a;color:var(--rd);border:1px solid var(--rd2)}
+.badge-pend{background:var(--bg3);color:var(--tx3);border:1px solid var(--bd)}
+.anual-mes-rows{display:flex;flex-direction:column;gap:5px}
+.anual-row{display:flex;align-items:center;justify-content:space-between;font-size:11px}
+.anual-row-lbl{color:var(--tx3)}
+.anual-row-vals{display:flex;align-items:center;gap:5px}
+.anual-row-real{font-weight:500;color:var(--tx)}
+.anual-row-plan{color:var(--tx3)}
+.anual-bar-wrap{height:3px;background:var(--bd);border-radius:2px;overflow:hidden;margin-top:8px}
+.anual-bar-fill{height:100%;border-radius:2px}
+.anual-totais{background:var(--bg2);border:1px solid var(--bd2);border-radius:var(--cr);padding:18px;margin-bottom:20px;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}
+.anual-tot-item{text-align:center}
+.anual-tot-val{font-family:var(--fh);font-size:20px;font-weight:700;margin-bottom:3px}
+.anual-tot-lbl{font-size:10px;color:var(--tx3);text-transform:uppercase;letter-spacing:.6px}
+@media(max-width:900px){.anual-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:600px){.anual-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.anual-totais{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+@media(max-width:700px){
+  .sg5{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .g2,.g3,.g2e{grid-template-columns:1fr}
+  .dk{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .fg,.fg3{grid-template-columns:1fr}
+  .bar{padding:0 12px}
+  .wrap{padding:14px}
+}
+</style>
+</head>
+<body style="">
+<div class="app">
+
+<!-- TOPBAR -->
+<div class="bar">
+  <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+    <canvas id="logoCanvas" width="135" height="36" style="display:block;flex-shrink:0"></canvas>
+    <div class="nav">
+      <button class="nb" onclick="sv(&#39;dashboard&#39;,this)">Dashboard</button>
+      <button class="nb" onclick="sv(&#39;consultores&#39;,this)">Consultores</button>
+      <button class="nb on" onclick="sv(&#39;lancamento&#39;,this)">Lançamento</button>
+      <button class="nb" onclick="sv(&#39;ranking&#39;,this)">Ranking</button>
+      <button class="nb" onclick="sv(&#39;relatorios&#39;,this)">Relatórios</button>
+      <button class="nb" onclick="sv(&#39;gestao&#39;,this)">⚙ Gestão</button>
+    </div>
+  </div>
+  <div class="live">● ao vivo</div>
+</div>
+
+<div class="wrap">
+
+<!-- DASHBOARD -->
+<div class="view" id="view-dashboard">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+    <div><div style="font-family:var(--fh);font-size:20px;font-weight:700">Painel Geral — Equipe SPE 2026</div><div style="font-size:11px;color:var(--tx3);margin-top:2px">Turmas e empresas são totalizações independentes</div></div>
+    <div style="display:flex;gap:4px;flex-wrap:wrap;align-items:center" id="mchips">
+      <div class="mc on" onclick="sm(0,this)">Jan</div><div class="mc" onclick="sm(1,this)">Fev</div><div class="mc" onclick="sm(2,this)">Mar</div><div class="mc" onclick="sm(3,this)">Abr</div><div class="mc" onclick="sm(4,this)">Mai</div><div class="mc" onclick="sm(5,this)">Jun</div><div class="mc" onclick="sm(6,this)">Jul</div><div class="mc" onclick="sm(7,this)">Ago</div><div class="mc" onclick="sm(8,this)">Set</div><div class="mc" onclick="sm(9,this)">Out</div><div class="mc" onclick="sm(10,this)">Nov</div><div class="mc" onclick="sm(11,this)">Dez</div><div class="mc" onclick="sm(-1,this)" style="font-weight:500">Totais</div>
+      <div class="mc" id="mc-ano" onclick="toggleAnual(this)" style="font-weight:700;border-color:var(--pu);color:var(--pu)">📊 Ano</div>
+    </div>
+  </div>
+  <div class="ib">1 turma = grupo fixo de empresas únicas (7 encontros/mês). <b style="color:var(--tl)">Turmas</b> e <b style="color:var(--am)">Empresas</b> contados separadamente.</div>
+
+  <!-- PAINEL NORMAL -->
+  <div id="dash-normal">
+    <div class="sg5" id="dstats"><div class="sc tl"><div class="sl">Turmas planejadas</div><div class="sv">0</div><div class="ss">Janeiro</div></div><div class="sc bl"><div class="sl">Turmas realizadas</div><div class="sv" style="color:var(--rd)">0</div><div class="ss dn">0% da meta</div></div><div class="sc pu"><div class="sl">Empresas únicas plan.</div><div class="sv">0</div><div class="ss">Janeiro</div></div><div class="sc am"><div class="sl">Empresas únicas real.</div><div class="sv" style="color:var(--rd)">0</div><div class="ss dn">0% da meta</div></div><div class="sc gr"><div class="sl">Faturamento realizado</div><div class="sv" style="font-size:17px">R$&nbsp;0</div><div class="ss dn">0% de R$&nbsp;0</div></div></div>
+    <div class="g2">
+      <div class="cd"><div class="sh"><div><div class="st">Turmas — planejado vs realizado</div><div class="ss2">Por mês</div></div></div><div class="lr"><div class="li"><div class="lsq" style="background:#4f8ef7"></div>Plan.</div><div class="li"><div class="lsq" style="background:#3ecf8e"></div>Real.</div></div><div class="cw"><canvas id="cT" role="img" aria-label="Turmas" width="710" height="230" style="display: block; box-sizing: border-box; height: 230px; width: 710px;">.</canvas></div></div>
+      <div class="cd"><div class="sh"><div><div class="st">Empresas únicas</div><div class="ss2">Sem multiplicar encontros</div></div></div><div class="lr"><div class="li"><div class="lsq" style="background:#a78bfa"></div>Plan.</div><div class="li"><div class="lsq" style="background:#f7c44f"></div>Real.</div></div><div class="cw"><canvas id="cE" role="img" aria-label="Empresas" width="429" height="230" style="display: block; box-sizing: border-box; height: 230px; width: 429px;">.</canvas></div></div>
+    </div>
+    <div class="g3">
+      <div class="cd"><div class="sh"><div class="st">Aderência %</div></div><div class="cw"><canvas id="cA" role="img" aria-label="Aderência" width="361" height="230" style="display: block; box-sizing: border-box; height: 230px; width: 361px;">.</canvas></div></div>
+      <div class="cd"><div class="sh"><div class="st">Top 8 faturamento</div></div><div style="position:relative;width:100%;height:230px"><canvas id="cTop" role="img" aria-label="Top faturamento" width="361" height="230" style="display: block; box-sizing: border-box; height: 230px; width: 361px;">.</canvas></div></div>
+      <div class="cd">
+        <div class="sh"><div><div class="st">Meta anual vs acumulado</div><div class="ss2">Turmas · Empresas · Faturamento</div></div></div>
+        <div id="meta-nums" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px">
+    <div style="background:var(--bg3);border-radius:var(--sr);padding:10px 12px">
+      <div style="font-size:10px;color:var(--tx3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px">Turmas</div>
+      <div style="display:flex;align-items:baseline;gap:5px;margin-bottom:3px">
+        <span style="font-family:var(--fh);font-size:18px;font-weight:700;color:var(--rd)">0</span>
+        <span style="font-size:11px;color:var(--tx3)">/ 0</span>
+      </div>
+      <div style="height:4px;background:var(--bd);border-radius:2px;overflow:hidden;margin-bottom:4px">
+        <div style="height:100%;width:0%;background:var(--rd);border-radius:2px"></div>
+      </div>
+      <div style="font-size:11px;font-weight:600;color:var(--rd)">0% da meta</div>
+    </div>
+    <div style="background:var(--bg3);border-radius:var(--sr);padding:10px 12px">
+      <div style="font-size:10px;color:var(--tx3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px">Empresas</div>
+      <div style="display:flex;align-items:baseline;gap:5px;margin-bottom:3px">
+        <span style="font-family:var(--fh);font-size:18px;font-weight:700;color:var(--rd)">0</span>
+        <span style="font-size:11px;color:var(--tx3)">/ 0</span>
+      </div>
+      <div style="height:4px;background:var(--bd);border-radius:2px;overflow:hidden;margin-bottom:4px">
+        <div style="height:100%;width:0%;background:var(--rd);border-radius:2px"></div>
+      </div>
+      <div style="font-size:11px;font-weight:600;color:var(--rd)">0% da meta</div>
+    </div>
+    <div style="background:var(--bg3);border-radius:var(--sr);padding:10px 12px">
+      <div style="font-size:10px;color:var(--tx3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px">Faturamento</div>
+      <div style="display:flex;align-items:baseline;gap:5px;margin-bottom:3px">
+        <span style="font-family:var(--fh);font-size:18px;font-weight:700;color:var(--rd)">R$&nbsp;0</span>
+        <span style="font-size:11px;color:var(--tx3)">/ R$&nbsp;0</span>
+      </div>
+      <div style="height:4px;background:var(--bd);border-radius:2px;overflow:hidden;margin-bottom:4px">
+        <div style="height:100%;width:0%;background:var(--rd);border-radius:2px"></div>
+      </div>
+      <div style="font-size:11px;font-weight:600;color:var(--rd)">0% da meta</div>
+    </div></div>
+        <div style="position:relative;width:100%;height:150px"><canvas id="cMeta" role="img" aria-label="Meta anual vs realizado acumulado por fator" width="361" height="150" style="display: block; box-sizing: border-box; height: 150px; width: 361px;">Comparativo de metas anuais vs realizado acumulado.</canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAINEL ANUAL -->
+  <div class="anual-panel" id="dash-anual">
+    <div style="font-family:var(--fh);font-size:16px;font-weight:700;color:var(--tx);margin-bottom:16px;display:flex;align-items:center;gap:10px">
+      Desempenho Anual — mês a mês
+      <span style="font-size:11px;font-weight:400;color:var(--tx3)">2026 · toda a equipe</span>
+    </div>
+    <div class="anual-totais" id="anual-totais"></div>
+    <div class="g2e" style="margin-bottom:20px">
+      <div class="cd">
+        <div class="sh"><div><div class="st">Turmas — evolução mensal</div><div class="ss2">Planejado vs realizado</div></div></div>
+        <div class="lr"><div class="li"><div class="lsq" style="background:#4f8ef7"></div>Plan.</div><div class="li"><div class="lsq" style="background:#3ecf8e"></div>Real.</div></div>
+        <div style="position:relative;width:100%;height:260px"><canvas id="cAnualT" role="img" aria-label="Turmas anuais">.</canvas></div>
+      </div>
+      <div class="cd">
+        <div class="sh"><div><div class="st">Faturamento — evolução mensal</div><div class="ss2">Planejado vs realizado</div></div></div>
+        <div class="lr"><div class="li"><div class="lsq" style="background:#a78bfa"></div>Plan.</div><div class="li"><div class="lsq" style="background:#f7c44f"></div>Real.</div></div>
+        <div style="position:relative;width:100%;height:260px"><canvas id="cAnualF" role="img" aria-label="Faturamento anual">.</canvas></div>
+      </div>
+    </div>
+    <div class="anual-grid" id="anual-meses-grid"></div>
+    <div class="cd">
+      <div class="sh"><div class="st">Resumo detalhado — todos os meses</div></div>
+      <div class="tw">
+        <table>
+          <thead><tr><th>Mês</th><th>Turmas Plan.</th><th>Turmas Real.</th><th>Ader. Turmas</th><th>Emp. Plan.</th><th>Emp. Real.</th><th>Ader. Emp.</th><th>Fat. Plan.</th><th>Fat. Real.</th><th>Ader. Fat.</th></tr></thead>
+          <tbody id="anual-tbody"></tbody>
+          <tfoot id="anual-tfoot" style="border-top:2px solid var(--bd2)"></tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONSULTORES -->
+<div class="view" id="view-consultores">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px"><div><div style="font-family:var(--fh);font-size:20px;font-weight:700">Consultores</div><div style="font-size:11px;color:var(--tx3)">Clique para detalhes · turmas e empresas separados</div></div><input class="si" placeholder="Buscar..." oninput="fc(this.value)" id="srch"></div>
+  <div class="cg" id="cgrid"><div class="cc" onclick="oc(1)"><div style="display:flex;align-items:center;gap:9px;margin-bottom:8px"><div class="av" style="background:#4f8ef722;color:#4f8ef7">GR</div><div><div style="font-weight:500;color:var(--tx);font-size:13px">Gérson Rodrigues</div><div style="font-size:10px;color:var(--tx3)">Meta: 12 turmas/ano</div></div></div><div class="ck4"><div class="ck"><div class="v" style="color:var(--tl)">0</div><div class="l">Turmas</div></div><div class="ck"><div class="v" style="color:var(--am)">0</div><div class="l">Empresas</div></div><div class="ck"><div class="v" style="font-size:11px;color:var(--ac)">R$&nbsp;0</div><div class="l">Fat.</div></div><div class="ck"><div class="v" style="color:var(--rd)">0%</div><div class="l">Ader.</div></div></div><div class="ab"><div class="af" style="width:0%;background:var(--rd)"></div></div></div><div class="cc sel" onclick="oc(2)"><div style="display:flex;align-items:center;gap:9px;margin-bottom:8px"><div class="av" style="background:#3ecf8e22;color:#3ecf8e">JL</div><div><div style="font-weight:500;color:var(--tx);font-size:13px">José Leonardo</div><div style="font-size:10px;color:var(--tx3)">Meta: 10 turmas/ano</div></div></div><div class="ck4"><div class="ck"><div class="v" style="color:var(--tl)">0</div><div class="l">Turmas</div></div><div class="ck"><div class="v" style="color:var(--am)">0</div><div class="l">Empresas</div></div><div class="ck"><div class="v" style="font-size:11px;color:var(--ac)">R$&nbsp;0</div><div class="l">Fat.</div></div><div class="ck"><div class="v" style="color:var(--rd)">0%</div><div class="l">Ader.</div></div></div><div class="ab"><div class="af" style="width:0%;background:var(--rd)"></div></div></div><div class="cc" onclick="oc(3)"><div style="display:flex;align-items:center;gap:9px;margin-bottom:8px"><div class="av" style="background:#f7c44f22;color:#f7c44f">NC</div><div><div style="font-weight:500;color:var(--tx);font-size:13px">Nédio Cerch</div><div style="font-size:10px;color:var(--tx3)">Meta: 9 turmas/ano</div></div></div><div class="ck4"><div class="ck"><div class="v" style="color:var(--tl)">0</div><div class="l">Turmas</div></div><div class="ck"><div class="v" style="color:var(--am)">0</div><div class="l">Empresas</div></div><div class="ck"><div class="v" style="font-size:11px;color:var(--ac)">R$&nbsp;0</div><div class="l">Fat.</div></div><div class="ck"><div class="v" style="color:var(--rd)">0%</div><div class="l">Ader.</div></div></div><div class="ab"><div class="af" style="width:0%;background:var(--rd)"></div></div></div><div class="cc" onclick="oc(4)"><div style="display:flex;align-items:center;gap:9px;margin-bottom:8px"><div class="av" style="background:#a78bfa22;color:#a78bfa">LM</div><div><div style="font-weight:500;color:var(--tx);font-size:13px">Lucas Maia</div><div style="font-size:10px;color:var(--tx3)">Meta: 8 turmas/ano</div></div></div><div class="ck4"><div class="ck"><div class="v" style="color:var(--tl)">0</div><div class="l">Turmas</div></div><div class="ck"><div class="v" style="color:var(--am)">0</div><div class="l">Empresas</div></div><div class="ck"><div class="v" style="font-size:11px;color:var(--ac)">R$&nbsp;0</div><div class="l">Fat.</div></div><div class="ck"><div class="v" style="color:var(--rd)">0%</div><div class="l">Ader.</div></div></div><div class="ab"><div class="af" style="width:0%;background:var(--rd)"></div></div></div><div class="cc" onclick="oc(5)"><div style="display:flex;align-items:center;gap:9px;margin-bottom:8px"><div class="av" style="background:#2dd4bf22;color:#2dd4bf">LP</div><div><div style="font-weight:500;color:var(--tx);font-size:13px">Liniker de Paula</div><div style="font-size:10px;color:var(--tx3)">Meta: 8 turmas/ano</div></div></div><div class="ck4"><div class="ck"><div class="v" style="color:var(--tl)">0</div><div class="l">Turmas</div></div><div class="ck"><div class="v" style="color:var(--am)">0</div><div class="l">Empresas</div></div><div class="ck"><div class="v" style="font-size:11px;color:var(--ac)">R$&nbsp;0</div><div class="l">Fat.</div></div><div class="ck"><div class="v" style="color:var(--rd)">0%</div><div class="l">Ader.</div></div></div><div class="ab"><div class="af" style="width:0%;background:var(--rd)"></div></div></div><div class="cc" onclick="oc(6)"><div style="display:flex;align-items:center;gap:9px;margin-bottom:8px"><div class="av" style="background:#f76e6e22;color:#f76e6e">LM</div><div><div style="font-weight:500;color:var(--tx);font-size:13px">Leandro Miranda</div><div style="font-size:10px;color:var(--tx3)">Meta: 9 turmas/ano</div></div></div><div class="ck4"><div class="ck"><div class="v" style="color:var(--tl)">0</div><div class="l">Turmas</div></div><div class="ck"><div class="v" style="color:var(--am)">0</div><div class="l">Empresas</div></div><div class="ck"><div class="v" style="font-size:11px;color:var(--ac)">R$&nbsp;0</div><div class="l">Fat.</div></div><div class="ck"><div class="v" style="color:var(--rd)">0%</div><div class="l">Ader.</div></div></div><div class="ab"><div class="af" style="width:0%;background:var(--rd)"></div></div></div><div class="cc" onclick="oc(7)"><div style="display:flex;align-items:center;gap:9px;margin-bottom:8px"><div class="av" style="background:#f7904f22;color:#f7904f">MF</div><div><div style="font-weight:500;color:var(--tx);font-size:13px">Miguel Faria</div><div style="font-size:10px;color:var(--tx3)">Meta: 10 turmas/ano</div></div></div><div class="ck4"><div class="ck"><div class="v" style="color:var(--tl)">0</div><div class="l">Turmas</div></div><div class="ck"><div class="v" style="color:var(--am)">0</div><div class="l">Empresas</div></div><div class="ck"><div class="v" style="font-size:11px;color:var(--ac)">R$&nbsp;0</div><div class="l">Fat.</div></div><div class="ck"><div class="v" style="color:var(--rd)">0%</div><div class="l">Ader.</div></div></div><div class="ab"><div class="af" style="width:0%;background:var(--rd)"></div></div></div><div class="cc" onclick="oc(8)"><div style="display:flex;align-items:center;gap:9px;margin-bottom:8px"><div class="av" style="background:#7ab3ff22;color:#7ab3ff">ED</div><div><div style="font-weight:500;color:var(--tx);font-size:13px">Elisângela Débora</div><div style="font-size:10px;color:var(--tx3)">Meta: 6 turmas/ano</div></div></div><div class="ck4"><div class="ck"><div class="v" style="color:var(--tl)">0</div><div class="l">Turmas</div></div><div class="ck"><div class="v" style="color:var(--am)">0</div><div class="l">Empresas</div></div><div class="ck"><div class="v" style="font-size:11px;color:var(--ac)">R$&nbsp;0</div><div class="l">Fat.</div></div><div class="ck"><div class="v" style="color:var(--rd)">0%</div><div class="l">Ader.</div></div></div><div class="ab"><div class="af" style="width:0%;background:var(--rd)"></div></div></div><div class="cc" onclick="oc(9)"><div style="display:flex;align-items:center;gap:9px;margin-bottom:8px"><div class="av" style="background:#5eead422;color:#5eead4">ME</div><div><div style="font-weight:500;color:var(--tx);font-size:13px">Maria Elisa</div><div style="font-size:10px;color:var(--tx3)">Meta: 6 turmas/ano</div></div></div><div class="ck4"><div class="ck"><div class="v" style="color:var(--tl)">0</div><div class="l">Turmas</div></div><div class="ck"><div class="v" style="color:var(--am)">0</div><div class="l">Empresas</div></div><div class="ck"><div class="v" style="font-size:11px;color:var(--ac)">R$&nbsp;0</div><div class="l">Fat.</div></div><div class="ck"><div class="v" style="color:var(--rd)">0%</div><div class="l">Ader.</div></div></div><div class="ab"><div class="af" style="width:0%;background:var(--rd)"></div></div></div><div class="cc" onclick="oc(10)"><div style="display:flex;align-items:center;gap:9px;margin-bottom:8px"><div class="av" style="background:#fbbf2422;color:#fbbf24">TB</div><div><div style="font-weight:500;color:var(--tx);font-size:13px">Thiago Bernini</div><div style="font-size:10px;color:var(--tx3)">Meta: 7 turmas/ano</div></div></div><div class="ck4"><div class="ck"><div class="v" style="color:var(--tl)">0</div><div class="l">Turmas</div></div><div class="ck"><div class="v" style="color:var(--am)">0</div><div class="l">Empresas</div></div><div class="ck"><div class="v" style="font-size:11px;color:var(--ac)">R$&nbsp;0</div><div class="l">Fat.</div></div><div class="ck"><div class="v" style="color:var(--rd)">0%</div><div class="l">Ader.</div></div></div><div class="ab"><div class="af" style="width:0%;background:var(--rd)"></div></div></div><div class="cc" onclick="oc(11)"><div style="display:flex;align-items:center;gap:9px;margin-bottom:8px"><div class="av" style="background:#c084fc22;color:#c084fc">LM</div><div><div style="font-weight:500;color:var(--tx);font-size:13px">Lilian Miranda</div><div style="font-size:10px;color:var(--tx3)">Meta: 8 turmas/ano</div></div></div><div class="ck4"><div class="ck"><div class="v" style="color:var(--tl)">0</div><div class="l">Turmas</div></div><div class="ck"><div class="v" style="color:var(--am)">0</div><div class="l">Empresas</div></div><div class="ck"><div class="v" style="font-size:11px;color:var(--ac)">R$&nbsp;0</div><div class="l">Fat.</div></div><div class="ck"><div class="v" style="color:var(--rd)">0%</div><div class="l">Ader.</div></div></div><div class="ab"><div class="af" style="width:0%;background:var(--rd)"></div></div></div><div class="cc" onclick="oc(12)"><div style="display:flex;align-items:center;gap:9px;margin-bottom:8px"><div class="av" style="background:#34d39922;color:#34d399">HB</div><div><div style="font-weight:500;color:var(--tx);font-size:13px">Hugo Borges</div><div style="font-size:10px;color:var(--tx3)">Meta: 8 turmas/ano</div></div></div><div class="ck4"><div class="ck"><div class="v" style="color:var(--tl)">0</div><div class="l">Turmas</div></div><div class="ck"><div class="v" style="color:var(--am)">0</div><div class="l">Empresas</div></div><div class="ck"><div class="v" style="font-size:11px;color:var(--ac)">R$&nbsp;0</div><div class="l">Fat.</div></div><div class="ck"><div class="v" style="color:var(--rd)">0%</div><div class="l">Ader.</div></div></div><div class="ab"><div class="af" style="width:0%;background:var(--rd)"></div></div></div><div class="cc" onclick="oc(13)"><div style="display:flex;align-items:center;gap:9px;margin-bottom:8px"><div class="av" style="background:#4f8ef722;color:#4f8ef7">TP</div><div><div style="font-weight:500;color:var(--tx);font-size:13px">Tiago Pinheiro</div><div style="font-size:10px;color:var(--tx3)">Meta: 6 turmas/ano</div></div></div><div class="ck4"><div class="ck"><div class="v" style="color:var(--tl)">0</div><div class="l">Turmas</div></div><div class="ck"><div class="v" style="color:var(--am)">0</div><div class="l">Empresas</div></div><div class="ck"><div class="v" style="font-size:11px;color:var(--ac)">R$&nbsp;0</div><div class="l">Fat.</div></div><div class="ck"><div class="v" style="color:var(--rd)">0%</div><div class="l">Ader.</div></div></div><div class="ab"><div class="af" style="width:0%;background:var(--rd)"></div></div></div><div class="cc" onclick="oc(14)"><div style="display:flex;align-items:center;gap:9px;margin-bottom:8px"><div class="av" style="background:#3ecf8e22;color:#3ecf8e">TT</div><div><div style="font-weight:500;color:var(--tx);font-size:13px">Tiago Toledo</div><div style="font-size:10px;color:var(--tx3)">Meta: 6 turmas/ano</div></div></div><div class="ck4"><div class="ck"><div class="v" style="color:var(--tl)">0</div><div class="l">Turmas</div></div><div class="ck"><div class="v" style="color:var(--am)">0</div><div class="l">Empresas</div></div><div class="ck"><div class="v" style="font-size:11px;color:var(--ac)">R$&nbsp;0</div><div class="l">Fat.</div></div><div class="ck"><div class="v" style="color:var(--rd)">0%</div><div class="l">Ader.</div></div></div><div class="ab"><div class="af" style="width:0%;background:var(--rd)"></div></div></div><div class="cc" onclick="oc(15)"><div style="display:flex;align-items:center;gap:9px;margin-bottom:8px"><div class="av" style="background:#f7c44f22;color:#f7c44f">DV</div><div><div style="font-weight:500;color:var(--tx);font-size:13px">Daniella Vilela</div><div style="font-size:10px;color:var(--tx3)">Meta: 7 turmas/ano</div></div></div><div class="ck4"><div class="ck"><div class="v" style="color:var(--tl)">0</div><div class="l">Turmas</div></div><div class="ck"><div class="v" style="color:var(--am)">0</div><div class="l">Empresas</div></div><div class="ck"><div class="v" style="font-size:11px;color:var(--ac)">R$&nbsp;0</div><div class="l">Fat.</div></div><div class="ck"><div class="v" style="color:var(--rd)">0%</div><div class="l">Ader.</div></div></div><div class="ab"><div class="af" style="width:0%;background:var(--rd)"></div></div></div><div class="cc" onclick="oc(16)"><div style="display:flex;align-items:center;gap:9px;margin-bottom:8px"><div class="av" style="background:#a78bfa22;color:#a78bfa">LG</div><div><div style="font-weight:500;color:var(--tx);font-size:13px">Lidiane Guimarães</div><div style="font-size:10px;color:var(--tx3)">Meta: 8 turmas/ano</div></div></div><div class="ck4"><div class="ck"><div class="v" style="color:var(--tl)">0</div><div class="l">Turmas</div></div><div class="ck"><div class="v" style="color:var(--am)">0</div><div class="l">Empresas</div></div><div class="ck"><div class="v" style="font-size:11px;color:var(--ac)">R$&nbsp;0</div><div class="l">Fat.</div></div><div class="ck"><div class="v" style="color:var(--rd)">0%</div><div class="l">Ader.</div></div></div><div class="ab"><div class="af" style="width:0%;background:var(--rd)"></div></div></div><div class="cc" onclick="oc(17)"><div style="display:flex;align-items:center;gap:9px;margin-bottom:8px"><div class="av" style="background:#2dd4bf22;color:#2dd4bf">MV</div><div><div style="font-weight:500;color:var(--tx);font-size:13px">Marcellos Versiani</div><div style="font-size:10px;color:var(--tx3)">Meta: 6 turmas/ano</div></div></div><div class="ck4"><div class="ck"><div class="v" style="color:var(--tl)">0</div><div class="l">Turmas</div></div><div class="ck"><div class="v" style="color:var(--am)">0</div><div class="l">Empresas</div></div><div class="ck"><div class="v" style="font-size:11px;color:var(--ac)">R$&nbsp;0</div><div class="l">Fat.</div></div><div class="ck"><div class="v" style="color:var(--rd)">0%</div><div class="l">Ader.</div></div></div><div class="ab"><div class="af" style="width:0%;background:var(--rd)"></div></div></div><div class="cc" onclick="oc(18)"><div style="display:flex;align-items:center;gap:9px;margin-bottom:8px"><div class="av" style="background:#f76e6e22;color:#f76e6e">AA</div><div><div style="font-weight:500;color:var(--tx);font-size:13px">Arnaldo Amaral</div><div style="font-size:10px;color:var(--tx3)">Meta: 6 turmas/ano</div></div></div><div class="ck4"><div class="ck"><div class="v" style="color:var(--tl)">0</div><div class="l">Turmas</div></div><div class="ck"><div class="v" style="color:var(--am)">0</div><div class="l">Empresas</div></div><div class="ck"><div class="v" style="font-size:11px;color:var(--ac)">R$&nbsp;0</div><div class="l">Fat.</div></div><div class="ck"><div class="v" style="color:var(--rd)">0%</div><div class="l">Ader.</div></div></div><div class="ab"><div class="af" style="width:0%;background:var(--rd)"></div></div></div><div class="cc" onclick="oc(19)"><div style="display:flex;align-items:center;gap:9px;margin-bottom:8px"><div class="av" style="background:#f7904f22;color:#f7904f">MN</div><div><div style="font-weight:500;color:var(--tx);font-size:13px">Marcos Neves</div><div style="font-size:10px;color:var(--tx3)">Meta: 5 turmas/ano</div></div></div><div class="ck4"><div class="ck"><div class="v" style="color:var(--tl)">0</div><div class="l">Turmas</div></div><div class="ck"><div class="v" style="color:var(--am)">0</div><div class="l">Empresas</div></div><div class="ck"><div class="v" style="font-size:11px;color:var(--ac)">R$&nbsp;0</div><div class="l">Fat.</div></div><div class="ck"><div class="v" style="color:var(--rd)">0%</div><div class="l">Ader.</div></div></div><div class="ab"><div class="af" style="width:0%;background:var(--rd)"></div></div></div><div class="cc" onclick="oc(20)"><div style="display:flex;align-items:center;gap:9px;margin-bottom:8px"><div class="av" style="background:#7ab3ff22;color:#7ab3ff">RA</div><div><div style="font-weight:500;color:var(--tx);font-size:13px">Ricardo Amui</div><div style="font-size:10px;color:var(--tx3)">Meta: 4 turmas/ano</div></div></div><div class="ck4"><div class="ck"><div class="v" style="color:var(--tl)">0</div><div class="l">Turmas</div></div><div class="ck"><div class="v" style="color:var(--am)">0</div><div class="l">Empresas</div></div><div class="ck"><div class="v" style="font-size:11px;color:var(--ac)">R$&nbsp;0</div><div class="l">Fat.</div></div><div class="ck"><div class="v" style="color:var(--rd)">0%</div><div class="l">Ader.</div></div></div><div class="ab"><div class="af" style="width:0%;background:var(--rd)"></div></div></div><div class="cc" onclick="oc(21)"><div style="display:flex;align-items:center;gap:9px;margin-bottom:8px"><div class="av" style="background:#5eead422;color:#5eead4">SF</div><div><div style="font-weight:500;color:var(--tx);font-size:13px">Silvano Faina</div><div style="font-size:10px;color:var(--tx3)">Meta: 5 turmas/ano</div></div></div><div class="ck4"><div class="ck"><div class="v" style="color:var(--tl)">0</div><div class="l">Turmas</div></div><div class="ck"><div class="v" style="color:var(--am)">0</div><div class="l">Empresas</div></div><div class="ck"><div class="v" style="font-size:11px;color:var(--ac)">R$&nbsp;0</div><div class="l">Fat.</div></div><div class="ck"><div class="v" style="color:var(--rd)">0%</div><div class="l">Ader.</div></div></div><div class="ab"><div class="af" style="width:0%;background:var(--rd)"></div></div></div><div class="cc" onclick="oc(22)"><div style="display:flex;align-items:center;gap:9px;margin-bottom:8px"><div class="av" style="background:#fbbf2422;color:#fbbf24">RJ</div><div><div style="font-weight:500;color:var(--tx);font-size:13px">Roberto Júnior</div><div style="font-size:10px;color:var(--tx3)">Meta: 5 turmas/ano</div></div></div><div class="ck4"><div class="ck"><div class="v" style="color:var(--tl)">0</div><div class="l">Turmas</div></div><div class="ck"><div class="v" style="color:var(--am)">0</div><div class="l">Empresas</div></div><div class="ck"><div class="v" style="font-size:11px;color:var(--ac)">R$&nbsp;0</div><div class="l">Fat.</div></div><div class="ck"><div class="v" style="color:var(--rd)">0%</div><div class="l">Ader.</div></div></div><div class="ab"><div class="af" style="width:0%;background:var(--rd)"></div></div></div><div class="cc" onclick="oc(23)"><div style="display:flex;align-items:center;gap:9px;margin-bottom:8px"><div class="av" style="background:#c084fc22;color:#c084fc">DP</div><div><div style="font-weight:500;color:var(--tx);font-size:13px">Deysner PC</div><div style="font-size:10px;color:var(--tx3)">Meta: 4 turmas/ano</div></div></div><div class="ck4"><div class="ck"><div class="v" style="color:var(--tl)">0</div><div class="l">Turmas</div></div><div class="ck"><div class="v" style="color:var(--am)">0</div><div class="l">Empresas</div></div><div class="ck"><div class="v" style="font-size:11px;color:var(--ac)">R$&nbsp;0</div><div class="l">Fat.</div></div><div class="ck"><div class="v" style="color:var(--rd)">0%</div><div class="l">Ader.</div></div></div><div class="ab"><div class="af" style="width:0%;background:var(--rd)"></div></div></div><div class="cc" onclick="oc(24)"><div style="display:flex;align-items:center;gap:9px;margin-bottom:8px"><div class="av" style="background:#34d39922;color:#34d399">JA</div><div><div style="font-weight:500;color:var(--tx);font-size:13px">Josiane Alfaro</div><div style="font-size:10px;color:var(--tx3)">Meta: 4 turmas/ano</div></div></div><div class="ck4"><div class="ck"><div class="v" style="color:var(--tl)">0</div><div class="l">Turmas</div></div><div class="ck"><div class="v" style="color:var(--am)">0</div><div class="l">Empresas</div></div><div class="ck"><div class="v" style="font-size:11px;color:var(--ac)">R$&nbsp;0</div><div class="l">Fat.</div></div><div class="ck"><div class="v" style="color:var(--rd)">0%</div><div class="l">Ader.</div></div></div><div class="ab"><div class="af" style="width:0%;background:var(--rd)"></div></div></div><div class="cc" onclick="oc(25)"><div style="display:flex;align-items:center;gap:9px;margin-bottom:8px"><div class="av" style="background:#4f8ef722;color:#4f8ef7">R</div><div><div style="font-weight:500;color:var(--tx);font-size:13px">Rafael</div><div style="font-size:10px;color:var(--tx3)">Meta: 4 turmas/ano</div></div></div><div class="ck4"><div class="ck"><div class="v" style="color:var(--tl)">0</div><div class="l">Turmas</div></div><div class="ck"><div class="v" style="color:var(--am)">0</div><div class="l">Empresas</div></div><div class="ck"><div class="v" style="font-size:11px;color:var(--ac)">R$&nbsp;0</div><div class="l">Fat.</div></div><div class="ck"><div class="v" style="color:var(--rd)">0%</div><div class="l">Ader.</div></div></div><div class="ab"><div class="af" style="width:0%;background:var(--rd)"></div></div></div><div class="cc" onclick="oc(26)"><div style="display:flex;align-items:center;gap:9px;margin-bottom:8px"><div class="av" style="background:#3ecf8e22;color:#3ecf8e">DS</div><div><div style="font-weight:500;color:var(--tx);font-size:13px">Denys Samuel</div><div style="font-size:10px;color:var(--tx3)">Meta: 4 turmas/ano</div></div></div><div class="ck4"><div class="ck"><div class="v" style="color:var(--tl)">0</div><div class="l">Turmas</div></div><div class="ck"><div class="v" style="color:var(--am)">0</div><div class="l">Empresas</div></div><div class="ck"><div class="v" style="font-size:11px;color:var(--ac)">R$&nbsp;0</div><div class="l">Fat.</div></div><div class="ck"><div class="v" style="color:var(--rd)">0%</div><div class="l">Ader.</div></div></div><div class="ab"><div class="af" style="width:0%;background:var(--rd)"></div></div></div><div class="cc" onclick="oc(27)"><div style="display:flex;align-items:center;gap:9px;margin-bottom:8px"><div class="av" style="background:#f7c44f22;color:#f7c44f">GC</div><div><div style="font-weight:500;color:var(--tx);font-size:13px">Gustavo Cunha</div><div style="font-size:10px;color:var(--tx3)">Meta: 4 turmas/ano</div></div></div><div class="ck4"><div class="ck"><div class="v" style="color:var(--tl)">0</div><div class="l">Turmas</div></div><div class="ck"><div class="v" style="color:var(--am)">0</div><div class="l">Empresas</div></div><div class="ck"><div class="v" style="font-size:11px;color:var(--ac)">R$&nbsp;0</div><div class="l">Fat.</div></div><div class="ck"><div class="v" style="color:var(--rd)">0%</div><div class="l">Ader.</div></div></div><div class="ab"><div class="af" style="width:0%;background:var(--rd)"></div></div></div></div>
+  <div id="cdet" style="display: block;"><div class="dp"><div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--bd)"><div class="av" style="width:48px;height:48px;font-size:16px;background:#3ecf8e22;color:#3ecf8e">JL</div><div style="flex:1"><div style="font-family:var(--fh);font-size:17px;font-weight:700">José Leonardo</div><div style="font-size:11px;color:var(--tx2);margin-top:2px">Meta: 10 turmas/ano · Ticket: R$&nbsp;3.500 · Londrina</div></div><div style="text-align:right"><div style="font-size:10px;color:var(--tx3);margin-bottom:2px">ADERÊNCIA TURMAS</div><div style="font-family:var(--fh);font-size:26px;font-weight:700;color:var(--rd)">0%</div><div style="font-size:10px;color:var(--tx3)">0 de 0 turmas</div></div></div><div class="dk"><div class="kb"><div class="kv" style="color:var(--tl)">0</div><div class="kl">Turmas plan.</div></div><div class="kb"><div class="kv" style="color:var(--tl)">0</div><div class="kl">Turmas real.</div></div><div class="kb"><div class="kv" style="color:var(--am)">0</div><div class="kl">Emp. plan.</div></div><div class="kb"><div class="kv" style="color:var(--am)">0</div><div class="kl">Emp. real.</div></div><div class="kb"><div class="kv" style="font-size:14px">R$&nbsp;0</div><div class="kl">Fat. realizado</div></div></div><div class="tw"><table><thead><tr><th>Mês</th><th>Turmas Plan.</th><th>Turmas Real.</th><th>Emp. Plan.</th><th>Emp. Real.</th><th>Fat. Plan.</th><th>Fat. Real.</th><th>Ader. Turmas</th><th>Ader. Emp.</th></tr></thead><tbody><tr><td style="color:var(--tx)">Janeiro</td><td><span class="pl pt">0</span></td><td><span class="pl pz">0</span></td><td>0</td><td><span class="pl pz">0</span></td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td><td><span class="pl pz">0%</span></td></tr><tr><td style="color:var(--tx)">Fevereiro</td><td><span class="pl pt">0</span></td><td><span class="pl pz">0</span></td><td>0</td><td><span class="pl pz">0</span></td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td><td><span class="pl pz">0%</span></td></tr><tr><td style="color:var(--tx)">Março</td><td><span class="pl pt">0</span></td><td><span class="pl pz">0</span></td><td>0</td><td><span class="pl pz">0</span></td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td><td><span class="pl pz">0%</span></td></tr><tr><td style="color:var(--tx)">Abril</td><td><span class="pl pt">0</span></td><td><span class="pl pz">0</span></td><td>0</td><td><span class="pl pz">0</span></td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td><td><span class="pl pz">0%</span></td></tr><tr><td style="color:var(--tx)">Maio</td><td><span class="pl pt">0</span></td><td><span class="pl pz">0</span></td><td>0</td><td><span class="pl pz">0</span></td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td><td><span class="pl pz">0%</span></td></tr><tr><td style="color:var(--tx)">Junho</td><td><span class="pl pt">0</span></td><td><span class="pl pz">0</span></td><td>0</td><td><span class="pl pz">0</span></td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td><td><span class="pl pz">0%</span></td></tr><tr><td style="color:var(--tx)">Julho</td><td><span class="pl pt">0</span></td><td><span class="pl pz">0</span></td><td>0</td><td><span class="pl pz">0</span></td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td><td><span class="pl pz">0%</span></td></tr><tr><td style="color:var(--tx)">Agosto</td><td><span class="pl pt">0</span></td><td><span class="pl pz">0</span></td><td>0</td><td><span class="pl pz">0</span></td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td><td><span class="pl pz">0%</span></td></tr><tr><td style="color:var(--tx)">Setembro</td><td><span class="pl pt">0</span></td><td><span class="pl pz">0</span></td><td>0</td><td><span class="pl pz">0</span></td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td><td><span class="pl pz">0%</span></td></tr><tr><td style="color:var(--tx)">Outubro</td><td><span class="pl pt">0</span></td><td><span class="pl pz">0</span></td><td>0</td><td><span class="pl pz">0</span></td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td><td><span class="pl pz">0%</span></td></tr><tr><td style="color:var(--tx)">Novembro</td><td><span class="pl pt">0</span></td><td><span class="pl pz">0</span></td><td>0</td><td><span class="pl pz">0</span></td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td><td><span class="pl pz">0%</span></td></tr><tr><td style="color:var(--tx)">Dezembro</td><td><span class="pl pt">0</span></td><td><span class="pl pz">0</span></td><td>0</td><td><span class="pl pz">0</span></td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td><td><span class="pl pz">0%</span></td></tr></tbody></table></div></div></div>
+</div>
+
+<!-- LANÇAMENTO -->
+<div class="view on" id="view-lancamento">
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+    <div>
+      <div style="font-family:var(--fh);font-size:20px;font-weight:700;margin-bottom:3px">Lançamento de resultados</div>
+      <div style="font-size:11px;color:var(--tx3)">Uma turma por lançamento</div>
+    </div>
+    <button class="btn-plan-abrir" onclick="abrirPlanejamento()">📅 Planejar ano todo</button>
+  </div>
+  <div class="lf">
+    <div class="fsl">Identificação</div>
+    <div class="fg">
+      <div class="fm"><label>Consultor</label><select id="lcon"><option value="">Selecione...</option><option value="1">Gérson Rodrigues</option><option value="2">José Leonardo</option><option value="3">Nédio Cerch</option><option value="4">Lucas Maia</option><option value="5">Liniker de Paula</option><option value="6">Leandro Miranda</option><option value="7">Miguel Faria</option><option value="8">Elisângela Débora</option><option value="9">Maria Elisa</option><option value="10">Thiago Bernini</option><option value="11">Lilian Miranda</option><option value="12">Hugo Borges</option><option value="13">Tiago Pinheiro</option><option value="14">Tiago Toledo</option><option value="15">Daniella Vilela</option><option value="16">Lidiane Guimarães</option><option value="17">Marcellos Versiani</option><option value="18">Arnaldo Amaral</option><option value="19">Marcos Neves</option><option value="20">Ricardo Amui</option><option value="21">Silvano Faina</option><option value="22">Roberto Júnior</option><option value="23">Deysner PC</option><option value="24">Josiane Alfaro</option><option value="25">Rafael</option><option value="26">Denys Samuel</option><option value="27">Gustavo Cunha</option></select></div>
+      <div class="fm"><label>Mês</label><select id="lmes"><option value="0">Janeiro</option><option value="1">Fevereiro</option><option value="2">Março</option><option value="3">Abril</option><option value="4">Maio</option><option value="5">Junho</option><option value="6">Julho</option><option value="7">Agosto</option><option value="8">Setembro</option><option value="9">Outubro</option><option value="10">Novembro</option><option value="11">Dezembro</option></select></div>
+      <div class="fm"><label>Semana</label><select id="lsem"><option value="0">Semana 1</option><option value="1">Semana 2</option><option value="2">Semana 3</option><option value="3">Semana 4</option><option value="4">Semana 5</option></select></div>
+      <div class="fm"><label>Cidade / Turma</label><input type="text" id="lcid" placeholder="Ex: Uberaba 18"></div>
+    </div>
+    <div class="dv"></div>
+    <div class="fsl">Dados realizados</div>
+    <div class="ib">O sistema conta +1 turma por lançamento. Informe as <b style="color:var(--am)">empresas únicas desta turma</b>. Se a mesma turma aparecer mais de uma vez no mês, o sistema usa o <b style="color:var(--tl)">maior valor informado</b> — sem duplicar empresas.</div>
+    <div class="fg">
+      <div class="fm"><label>Empresas únicas realizadas</label><input type="number" id="lemp" placeholder="Ex: 21" min="0"></div>
+      <div class="fm"><label>Empresas únicas planejadas (ref.)</label><input type="number" id="lep" placeholder="Ex: 21" min="0"></div>
+      <div class="fm"><label>Faturamento realizado (R$)</label><input type="number" id="lfat" placeholder="Ex: 73500" min="0"></div>
+      <div class="fm"><label>Faturamento planejado (ref.)</label><input type="number" id="lfp" placeholder="Ex: 73500" min="0"></div>
+    </div>
+    <div class="brow"><button class="bp" onclick="lancar()">Salvar lançamento</button><button class="bs" onclick="limpar()">Limpar</button></div>
+  </div>
+  <div style="margin-top:16px"><div class="sh"><div class="st">Últimos lançamentos</div></div><div id="rlanc"><div class="es">Nenhum lançamento ainda</div></div></div>
+
+  <!-- PAINEL DE DEBUG -->
+  <div id="debug-panel" style="margin-top:16px;background:#0a1a0a;border:1px solid var(--gr2);border-radius:var(--cr);padding:16px;display:none">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+      <div style="font-family:var(--fh);font-size:13px;font-weight:700;color:var(--gr)">🔍 Debug — valores calculados no MD</div>
+      <button class="bs" style="font-size:11px;padding:4px 10px" onclick="g(&#39;debug-panel&#39;).style.display=&#39;none&#39;">Fechar</button>
+    </div>
+    <div id="debug-body" style="font-size:12px;color:var(--tx2);font-family:monospace;line-height:1.8"></div>
+  </div>
+  <div style="margin-top:10px">
+    <button class="bs" style="font-size:11px" onclick="showDebug()">🔍 Ver debug do consultor selecionado</button>
+  </div>
+</div>
+
+<!-- RANKING -->
+<div class="view" id="view-ranking">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+    <div><div style="font-family:var(--fh);font-size:20px;font-weight:700">Ranking da equipe</div><div style="font-size:11px;color:var(--tx3)">Turmas, empresas e faturamento independentes</div></div>
+    <div style="display:flex;gap:7px;flex-wrap:wrap">
+      <select class="fs2" id="rmes" onchange="rr()"><option value="-1">Ano todo</option><option value="0">Janeiro</option><option value="1">Fevereiro</option><option value="2">Março</option><option value="3">Abril</option><option value="4">Maio</option><option value="5">Junho</option><option value="6">Julho</option><option value="7">Agosto</option><option value="8">Setembro</option><option value="9">Outubro</option><option value="10">Novembro</option><option value="11">Dezembro</option></select>
+      <select class="fs2" id="rcrit" onchange="rr()"><option value="fat">Faturamento</option><option value="emp">Empresas</option><option value="tur">Turmas</option><option value="adh">Aderência %</option></select>
+    </div>
+  </div>
+  <div class="g2e" style="margin-bottom:14px">
+    <div class="cd"><div class="sh"><div class="st">Top 8 — Faturamento</div></div><div style="position:relative;width:100%;height:250px"><canvas id="cRF" role="img" aria-label="Rank fat." height="0" style="display: block; box-sizing: border-box; height: 0px; width: 0px;" width="0">.</canvas></div></div>
+    <div class="cd"><div class="sh"><div class="st">Turmas × Empresas</div></div><div style="position:relative;width:100%;height:250px"><canvas id="cRTE" role="img" aria-label="Turmas e empresas" height="0" style="display: block; box-sizing: border-box; height: 0px; width: 0px;" width="0">.</canvas></div></div>
+  </div>
+  <div class="cd"><div class="sh"><div class="st">Tabela completa</div></div>
+    <div class="tw"><table><thead><tr><th>#</th><th>Consultor</th><th>Turmas Plan.</th><th>Turmas Real.</th><th>Emp. Plan.</th><th>Emp. Real.</th><th>Fat. Plan.</th><th>Fat. Real.</th><th>Aderência</th></tr></thead><tbody id="rtbody"><tr><td style="color:var(--am);font-family:var(--fh);font-weight:700">1</td><td class="nc">Gérson Rodrigues</td><td>0</td><td style="color:var(--tl)">0</td><td>0</td><td style="color:var(--am)">0</td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td></tr><tr><td style="color:#8892aa;font-family:var(--fh);font-weight:700">2</td><td class="nc">José Leonardo</td><td>0</td><td style="color:var(--tl)">0</td><td>0</td><td style="color:var(--am)">0</td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td></tr><tr><td style="color:#cd7f32;font-family:var(--fh);font-weight:700">3</td><td class="nc">Nédio Cerch</td><td>0</td><td style="color:var(--tl)">0</td><td>0</td><td style="color:var(--am)">0</td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td></tr><tr><td style="color:var(--tx3);font-family:var(--fh);font-weight:700">4</td><td class="nc">Lucas Maia</td><td>0</td><td style="color:var(--tl)">0</td><td>0</td><td style="color:var(--am)">0</td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td></tr><tr><td style="color:var(--tx3);font-family:var(--fh);font-weight:700">5</td><td class="nc">Liniker de Paula</td><td>0</td><td style="color:var(--tl)">0</td><td>0</td><td style="color:var(--am)">0</td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td></tr><tr><td style="color:var(--tx3);font-family:var(--fh);font-weight:700">6</td><td class="nc">Leandro Miranda</td><td>0</td><td style="color:var(--tl)">0</td><td>0</td><td style="color:var(--am)">0</td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td></tr><tr><td style="color:var(--tx3);font-family:var(--fh);font-weight:700">7</td><td class="nc">Miguel Faria</td><td>0</td><td style="color:var(--tl)">0</td><td>0</td><td style="color:var(--am)">0</td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td></tr><tr><td style="color:var(--tx3);font-family:var(--fh);font-weight:700">8</td><td class="nc">Elisângela Débora</td><td>0</td><td style="color:var(--tl)">0</td><td>0</td><td style="color:var(--am)">0</td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td></tr><tr><td style="color:var(--tx3);font-family:var(--fh);font-weight:700">9</td><td class="nc">Maria Elisa</td><td>0</td><td style="color:var(--tl)">0</td><td>0</td><td style="color:var(--am)">0</td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td></tr><tr><td style="color:var(--tx3);font-family:var(--fh);font-weight:700">10</td><td class="nc">Thiago Bernini</td><td>0</td><td style="color:var(--tl)">0</td><td>0</td><td style="color:var(--am)">0</td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td></tr><tr><td style="color:var(--tx3);font-family:var(--fh);font-weight:700">11</td><td class="nc">Lilian Miranda</td><td>0</td><td style="color:var(--tl)">0</td><td>0</td><td style="color:var(--am)">0</td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td></tr><tr><td style="color:var(--tx3);font-family:var(--fh);font-weight:700">12</td><td class="nc">Hugo Borges</td><td>0</td><td style="color:var(--tl)">0</td><td>0</td><td style="color:var(--am)">0</td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td></tr><tr><td style="color:var(--tx3);font-family:var(--fh);font-weight:700">13</td><td class="nc">Tiago Pinheiro</td><td>0</td><td style="color:var(--tl)">0</td><td>0</td><td style="color:var(--am)">0</td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td></tr><tr><td style="color:var(--tx3);font-family:var(--fh);font-weight:700">14</td><td class="nc">Tiago Toledo</td><td>0</td><td style="color:var(--tl)">0</td><td>0</td><td style="color:var(--am)">0</td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td></tr><tr><td style="color:var(--tx3);font-family:var(--fh);font-weight:700">15</td><td class="nc">Daniella Vilela</td><td>0</td><td style="color:var(--tl)">0</td><td>0</td><td style="color:var(--am)">0</td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td></tr><tr><td style="color:var(--tx3);font-family:var(--fh);font-weight:700">16</td><td class="nc">Lidiane Guimarães</td><td>0</td><td style="color:var(--tl)">0</td><td>0</td><td style="color:var(--am)">0</td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td></tr><tr><td style="color:var(--tx3);font-family:var(--fh);font-weight:700">17</td><td class="nc">Marcellos Versiani</td><td>0</td><td style="color:var(--tl)">0</td><td>0</td><td style="color:var(--am)">0</td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td></tr><tr><td style="color:var(--tx3);font-family:var(--fh);font-weight:700">18</td><td class="nc">Arnaldo Amaral</td><td>0</td><td style="color:var(--tl)">0</td><td>0</td><td style="color:var(--am)">0</td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td></tr><tr><td style="color:var(--tx3);font-family:var(--fh);font-weight:700">19</td><td class="nc">Marcos Neves</td><td>0</td><td style="color:var(--tl)">0</td><td>0</td><td style="color:var(--am)">0</td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td></tr><tr><td style="color:var(--tx3);font-family:var(--fh);font-weight:700">20</td><td class="nc">Ricardo Amui</td><td>0</td><td style="color:var(--tl)">0</td><td>0</td><td style="color:var(--am)">0</td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td></tr><tr><td style="color:var(--tx3);font-family:var(--fh);font-weight:700">21</td><td class="nc">Silvano Faina</td><td>0</td><td style="color:var(--tl)">0</td><td>0</td><td style="color:var(--am)">0</td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td></tr><tr><td style="color:var(--tx3);font-family:var(--fh);font-weight:700">22</td><td class="nc">Roberto Júnior</td><td>0</td><td style="color:var(--tl)">0</td><td>0</td><td style="color:var(--am)">0</td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td></tr><tr><td style="color:var(--tx3);font-family:var(--fh);font-weight:700">23</td><td class="nc">Deysner PC</td><td>0</td><td style="color:var(--tl)">0</td><td>0</td><td style="color:var(--am)">0</td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td></tr><tr><td style="color:var(--tx3);font-family:var(--fh);font-weight:700">24</td><td class="nc">Josiane Alfaro</td><td>0</td><td style="color:var(--tl)">0</td><td>0</td><td style="color:var(--am)">0</td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td></tr><tr><td style="color:var(--tx3);font-family:var(--fh);font-weight:700">25</td><td class="nc">Rafael</td><td>0</td><td style="color:var(--tl)">0</td><td>0</td><td style="color:var(--am)">0</td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td></tr><tr><td style="color:var(--tx3);font-family:var(--fh);font-weight:700">26</td><td class="nc">Denys Samuel</td><td>0</td><td style="color:var(--tl)">0</td><td>0</td><td style="color:var(--am)">0</td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td></tr><tr><td style="color:var(--tx3);font-family:var(--fh);font-weight:700">27</td><td class="nc">Gustavo Cunha</td><td>0</td><td style="color:var(--tl)">0</td><td>0</td><td style="color:var(--am)">0</td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td></tr></tbody></table></div>
+  </div>
+</div>
+
+<!-- RELATÓRIOS -->
+<div class="view" id="view-relatorios">
+  <div style="font-family:var(--fh);font-size:20px;font-weight:700;margin-bottom:3px">Relatórios</div>
+  <div style="font-size:11px;color:var(--tx3);margin-bottom:14px">Turmas e empresas separados em todas as análises</div>
+  <div class="tr2"><button class="tb on" onclick="stab(&#39;tg&#39;,this)">Visão geral anual</button><button class="tb" onclick="stab(&#39;tt&#39;,this)">Por trimestre</button><button class="tb" onclick="stab(&#39;tc&#39;,this)">Por consultor</button></div>
+  <div id="tg">
+    <div class="sg4" id="rstats"><div class="sc tl"><div class="sl">Turmas plan. (ano)</div><div class="sv">0</div><div class="ss">0% realizado</div></div><div class="sc bl"><div class="sl">Turmas realizadas</div><div class="sv" style="color:var(--rd)">0</div><div class="ss dn">Ader.: 0%</div></div><div class="sc am"><div class="sl">Empresas únicas plan.</div><div class="sv">0</div><div class="ss">0% realizado</div></div><div class="sc gr"><div class="sl">Fat. realizado</div><div class="sv" style="font-size:16px">R$&nbsp;0</div><div class="ss">0% de R$&nbsp;0</div></div></div>
+    <div class="cd" style="margin-bottom:14px"><div class="sh"><div class="st">Resumo anual por mês</div></div>
+      <div class="tw"><table><thead><tr><th>Mês</th><th>Turmas Plan.</th><th>Turmas Real.</th><th>Emp. Plan.</th><th>Emp. Real.</th><th>Fat. Plan.</th><th>Fat. Real.</th><th>Ader. Turmas</th><th>Ader. Emp.</th><th>Status</th></tr></thead><tbody id="rtbody2"><tr><td style="color:var(--tx)">Janeiro</td><td>0</td><td style="color:var(--tl)">0</td><td>0</td><td style="color:var(--am)">0</td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td><td><span class="pl pz">0%</span></td><td><span class="pl pz">Pendente</span></td></tr><tr><td style="color:var(--tx)">Fevereiro</td><td>0</td><td style="color:var(--tl)">0</td><td>0</td><td style="color:var(--am)">0</td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td><td><span class="pl pz">0%</span></td><td><span class="pl pz">Pendente</span></td></tr><tr><td style="color:var(--tx)">Março</td><td>0</td><td style="color:var(--tl)">0</td><td>0</td><td style="color:var(--am)">0</td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td><td><span class="pl pz">0%</span></td><td><span class="pl pz">Pendente</span></td></tr><tr><td style="color:var(--tx)">Abril</td><td>0</td><td style="color:var(--tl)">0</td><td>0</td><td style="color:var(--am)">0</td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td><td><span class="pl pz">0%</span></td><td><span class="pl pz">Pendente</span></td></tr><tr><td style="color:var(--tx)">Maio</td><td>0</td><td style="color:var(--tl)">0</td><td>0</td><td style="color:var(--am)">0</td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td><td><span class="pl pz">0%</span></td><td><span class="pl pz">Pendente</span></td></tr><tr><td style="color:var(--tx)">Junho</td><td>0</td><td style="color:var(--tl)">0</td><td>0</td><td style="color:var(--am)">0</td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td><td><span class="pl pz">0%</span></td><td><span class="pl pz">Pendente</span></td></tr><tr><td style="color:var(--tx)">Julho</td><td>0</td><td style="color:var(--tl)">0</td><td>0</td><td style="color:var(--am)">0</td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td><td><span class="pl pz">0%</span></td><td><span class="pl pz">Pendente</span></td></tr><tr><td style="color:var(--tx)">Agosto</td><td>0</td><td style="color:var(--tl)">0</td><td>0</td><td style="color:var(--am)">0</td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td><td><span class="pl pz">0%</span></td><td><span class="pl pz">Pendente</span></td></tr><tr><td style="color:var(--tx)">Setembro</td><td>0</td><td style="color:var(--tl)">0</td><td>0</td><td style="color:var(--am)">0</td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td><td><span class="pl pz">0%</span></td><td><span class="pl pz">Pendente</span></td></tr><tr><td style="color:var(--tx)">Outubro</td><td>0</td><td style="color:var(--tl)">0</td><td>0</td><td style="color:var(--am)">0</td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td><td><span class="pl pz">0%</span></td><td><span class="pl pz">Pendente</span></td></tr><tr><td style="color:var(--tx)">Novembro</td><td>0</td><td style="color:var(--tl)">0</td><td>0</td><td style="color:var(--am)">0</td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td><td><span class="pl pz">0%</span></td><td><span class="pl pz">Pendente</span></td></tr><tr><td style="color:var(--tx)">Dezembro</td><td>0</td><td style="color:var(--tl)">0</td><td>0</td><td style="color:var(--am)">0</td><td style="font-size:11px">R$&nbsp;0</td><td style="font-size:11px;color:var(--gr)">R$&nbsp;0</td><td><span class="pl pz">0%</span></td><td><span class="pl pz">0%</span></td><td><span class="pl pz">Pendente</span></td></tr></tbody></table></div>
+    </div>
+    <div class="brow"><button class="bp" onclick="xcsv()">Exportar CSV</button><button class="bs" onclick="xjson()">Exportar JSON</button></div>
+  </div>
+  <div id="tt" style="display:none"><div class="g2e"><div class="cd"><div class="sh"><div class="st">Turmas por trimestre</div></div><div class="cw"><canvas id="cTrim" role="img" aria-label="Turmas trimestre">.</canvas></div></div><div class="cd"><div class="sh"><div class="st">Empresas por trimestre</div></div><div class="cw"><canvas id="cTrimE" role="img" aria-label="Empresas trimestre">.</canvas></div></div></div></div>
+  <div id="tc" style="display:none"><div class="fm" style="max-width:260px;margin-bottom:14px"><label>Consultor</label><select id="rsel" onchange="rc()"><option value="">Selecione...</option><option value="1">Gérson Rodrigues</option><option value="2">José Leonardo</option><option value="3">Nédio Cerch</option><option value="4">Lucas Maia</option><option value="5">Liniker de Paula</option><option value="6">Leandro Miranda</option><option value="7">Miguel Faria</option><option value="8">Elisângela Débora</option><option value="9">Maria Elisa</option><option value="10">Thiago Bernini</option><option value="11">Lilian Miranda</option><option value="12">Hugo Borges</option><option value="13">Tiago Pinheiro</option><option value="14">Tiago Toledo</option><option value="15">Daniella Vilela</option><option value="16">Lidiane Guimarães</option><option value="17">Marcellos Versiani</option><option value="18">Arnaldo Amaral</option><option value="19">Marcos Neves</option><option value="20">Ricardo Amui</option><option value="21">Silvano Faina</option><option value="22">Roberto Júnior</option><option value="23">Deysner PC</option><option value="24">Josiane Alfaro</option><option value="25">Rafael</option><option value="26">Denys Samuel</option><option value="27">Gustavo Cunha</option></select></div><div id="rcout"></div></div>
+</div>
+
+<!-- GESTÃO DE CONSULTORES -->
+<div class="view" id="view-gestao">
+  <div style="font-family:var(--fh);font-size:20px;font-weight:700;margin-bottom:4px">Gestão de Consultores</div>
+  <div style="font-size:11px;color:var(--tx3);margin-bottom:20px">Adicione, edite ou remova consultores da equipe SPE</div>
+
+  <div class="g2e">
+    <!-- LISTA -->
+    <div>
+      <div class="cd" style="margin-bottom:14px">
+        <div class="sh"><div class="st">Consultores cadastrados</div><span id="cons-total" style="font-size:11px;color:var(--tx3);background:var(--bg3);padding:2px 8px;border-radius:10px">27 consultores</span></div>
+        <input class="si" style="width:100%;margin-bottom:12px" placeholder="Buscar consultor..." oninput="filtrarGestao(this.value)" id="searchGestao">
+        <div class="cons-lista" id="cons-lista"><div class="cons-item"><div class="av" style="background:#4f8ef722;color:#4f8ef7;width:32px;height:32px;font-size:11px;flex-shrink:0">GR</div><div style="flex:1"><div class="cons-item-nome">Gérson Rodrigues</div><div class="cons-item-meta">Meta: 12 turmas/ano · Ticket: R$&nbsp;3.500 · Uberaba</div></div><div class="cons-item-actions"><button class="icon-btn" onclick="editarCons(1)">Editar</button><button class="icon-btn del" onclick="pedirExclusao(1)">Remover</button></div></div><div class="cons-item"><div class="av" style="background:#3ecf8e22;color:#3ecf8e;width:32px;height:32px;font-size:11px;flex-shrink:0">JL</div><div style="flex:1"><div class="cons-item-nome">José Leonardo</div><div class="cons-item-meta">Meta: 10 turmas/ano · Ticket: R$&nbsp;3.500 · Londrina</div></div><div class="cons-item-actions"><button class="icon-btn" onclick="editarCons(2)">Editar</button><button class="icon-btn del" onclick="pedirExclusao(2)">Remover</button></div></div><div class="cons-item"><div class="av" style="background:#f7c44f22;color:#f7c44f;width:32px;height:32px;font-size:11px;flex-shrink:0">NC</div><div style="flex:1"><div class="cons-item-nome">Nédio Cerch</div><div class="cons-item-meta">Meta: 9 turmas/ano · Ticket: R$&nbsp;3.500</div></div><div class="cons-item-actions"><button class="icon-btn" onclick="editarCons(3)">Editar</button><button class="icon-btn del" onclick="pedirExclusao(3)">Remover</button></div></div><div class="cons-item"><div class="av" style="background:#a78bfa22;color:#a78bfa;width:32px;height:32px;font-size:11px;flex-shrink:0">LM</div><div style="flex:1"><div class="cons-item-nome">Lucas Maia</div><div class="cons-item-meta">Meta: 8 turmas/ano · Ticket: R$&nbsp;3.500</div></div><div class="cons-item-actions"><button class="icon-btn" onclick="editarCons(4)">Editar</button><button class="icon-btn del" onclick="pedirExclusao(4)">Remover</button></div></div><div class="cons-item"><div class="av" style="background:#2dd4bf22;color:#2dd4bf;width:32px;height:32px;font-size:11px;flex-shrink:0">LP</div><div style="flex:1"><div class="cons-item-nome">Liniker de Paula</div><div class="cons-item-meta">Meta: 8 turmas/ano · Ticket: R$&nbsp;3.500</div></div><div class="cons-item-actions"><button class="icon-btn" onclick="editarCons(5)">Editar</button><button class="icon-btn del" onclick="pedirExclusao(5)">Remover</button></div></div><div class="cons-item"><div class="av" style="background:#f76e6e22;color:#f76e6e;width:32px;height:32px;font-size:11px;flex-shrink:0">LM</div><div style="flex:1"><div class="cons-item-nome">Leandro Miranda</div><div class="cons-item-meta">Meta: 9 turmas/ano · Ticket: R$&nbsp;3.500</div></div><div class="cons-item-actions"><button class="icon-btn" onclick="editarCons(6)">Editar</button><button class="icon-btn del" onclick="pedirExclusao(6)">Remover</button></div></div><div class="cons-item"><div class="av" style="background:#f7904f22;color:#f7904f;width:32px;height:32px;font-size:11px;flex-shrink:0">MF</div><div style="flex:1"><div class="cons-item-nome">Miguel Faria</div><div class="cons-item-meta">Meta: 10 turmas/ano · Ticket: R$&nbsp;3.500</div></div><div class="cons-item-actions"><button class="icon-btn" onclick="editarCons(7)">Editar</button><button class="icon-btn del" onclick="pedirExclusao(7)">Remover</button></div></div><div class="cons-item"><div class="av" style="background:#7ab3ff22;color:#7ab3ff;width:32px;height:32px;font-size:11px;flex-shrink:0">ED</div><div style="flex:1"><div class="cons-item-nome">Elisângela Débora</div><div class="cons-item-meta">Meta: 6 turmas/ano · Ticket: R$&nbsp;3.500</div></div><div class="cons-item-actions"><button class="icon-btn" onclick="editarCons(8)">Editar</button><button class="icon-btn del" onclick="pedirExclusao(8)">Remover</button></div></div><div class="cons-item"><div class="av" style="background:#5eead422;color:#5eead4;width:32px;height:32px;font-size:11px;flex-shrink:0">ME</div><div style="flex:1"><div class="cons-item-nome">Maria Elisa</div><div class="cons-item-meta">Meta: 6 turmas/ano · Ticket: R$&nbsp;3.500</div></div><div class="cons-item-actions"><button class="icon-btn" onclick="editarCons(9)">Editar</button><button class="icon-btn del" onclick="pedirExclusao(9)">Remover</button></div></div><div class="cons-item"><div class="av" style="background:#fbbf2422;color:#fbbf24;width:32px;height:32px;font-size:11px;flex-shrink:0">TB</div><div style="flex:1"><div class="cons-item-nome">Thiago Bernini</div><div class="cons-item-meta">Meta: 7 turmas/ano · Ticket: R$&nbsp;3.500</div></div><div class="cons-item-actions"><button class="icon-btn" onclick="editarCons(10)">Editar</button><button class="icon-btn del" onclick="pedirExclusao(10)">Remover</button></div></div><div class="cons-item"><div class="av" style="background:#c084fc22;color:#c084fc;width:32px;height:32px;font-size:11px;flex-shrink:0">LM</div><div style="flex:1"><div class="cons-item-nome">Lilian Miranda</div><div class="cons-item-meta">Meta: 8 turmas/ano · Ticket: R$&nbsp;3.500</div></div><div class="cons-item-actions"><button class="icon-btn" onclick="editarCons(11)">Editar</button><button class="icon-btn del" onclick="pedirExclusao(11)">Remover</button></div></div><div class="cons-item"><div class="av" style="background:#34d39922;color:#34d399;width:32px;height:32px;font-size:11px;flex-shrink:0">HB</div><div style="flex:1"><div class="cons-item-nome">Hugo Borges</div><div class="cons-item-meta">Meta: 8 turmas/ano · Ticket: R$&nbsp;3.500</div></div><div class="cons-item-actions"><button class="icon-btn" onclick="editarCons(12)">Editar</button><button class="icon-btn del" onclick="pedirExclusao(12)">Remover</button></div></div><div class="cons-item"><div class="av" style="background:#4f8ef722;color:#4f8ef7;width:32px;height:32px;font-size:11px;flex-shrink:0">TP</div><div style="flex:1"><div class="cons-item-nome">Tiago Pinheiro</div><div class="cons-item-meta">Meta: 6 turmas/ano · Ticket: R$&nbsp;3.500</div></div><div class="cons-item-actions"><button class="icon-btn" onclick="editarCons(13)">Editar</button><button class="icon-btn del" onclick="pedirExclusao(13)">Remover</button></div></div><div class="cons-item"><div class="av" style="background:#3ecf8e22;color:#3ecf8e;width:32px;height:32px;font-size:11px;flex-shrink:0">TT</div><div style="flex:1"><div class="cons-item-nome">Tiago Toledo</div><div class="cons-item-meta">Meta: 6 turmas/ano · Ticket: R$&nbsp;3.500</div></div><div class="cons-item-actions"><button class="icon-btn" onclick="editarCons(14)">Editar</button><button class="icon-btn del" onclick="pedirExclusao(14)">Remover</button></div></div><div class="cons-item"><div class="av" style="background:#f7c44f22;color:#f7c44f;width:32px;height:32px;font-size:11px;flex-shrink:0">DV</div><div style="flex:1"><div class="cons-item-nome">Daniella Vilela</div><div class="cons-item-meta">Meta: 7 turmas/ano · Ticket: R$&nbsp;3.500</div></div><div class="cons-item-actions"><button class="icon-btn" onclick="editarCons(15)">Editar</button><button class="icon-btn del" onclick="pedirExclusao(15)">Remover</button></div></div><div class="cons-item"><div class="av" style="background:#a78bfa22;color:#a78bfa;width:32px;height:32px;font-size:11px;flex-shrink:0">LG</div><div style="flex:1"><div class="cons-item-nome">Lidiane Guimarães</div><div class="cons-item-meta">Meta: 8 turmas/ano · Ticket: R$&nbsp;3.500</div></div><div class="cons-item-actions"><button class="icon-btn" onclick="editarCons(16)">Editar</button><button class="icon-btn del" onclick="pedirExclusao(16)">Remover</button></div></div><div class="cons-item"><div class="av" style="background:#2dd4bf22;color:#2dd4bf;width:32px;height:32px;font-size:11px;flex-shrink:0">MV</div><div style="flex:1"><div class="cons-item-nome">Marcellos Versiani</div><div class="cons-item-meta">Meta: 6 turmas/ano · Ticket: R$&nbsp;3.500</div></div><div class="cons-item-actions"><button class="icon-btn" onclick="editarCons(17)">Editar</button><button class="icon-btn del" onclick="pedirExclusao(17)">Remover</button></div></div><div class="cons-item"><div class="av" style="background:#f76e6e22;color:#f76e6e;width:32px;height:32px;font-size:11px;flex-shrink:0">AA</div><div style="flex:1"><div class="cons-item-nome">Arnaldo Amaral</div><div class="cons-item-meta">Meta: 6 turmas/ano · Ticket: R$&nbsp;3.500</div></div><div class="cons-item-actions"><button class="icon-btn" onclick="editarCons(18)">Editar</button><button class="icon-btn del" onclick="pedirExclusao(18)">Remover</button></div></div><div class="cons-item"><div class="av" style="background:#f7904f22;color:#f7904f;width:32px;height:32px;font-size:11px;flex-shrink:0">MN</div><div style="flex:1"><div class="cons-item-nome">Marcos Neves</div><div class="cons-item-meta">Meta: 5 turmas/ano · Ticket: R$&nbsp;3.500</div></div><div class="cons-item-actions"><button class="icon-btn" onclick="editarCons(19)">Editar</button><button class="icon-btn del" onclick="pedirExclusao(19)">Remover</button></div></div><div class="cons-item"><div class="av" style="background:#7ab3ff22;color:#7ab3ff;width:32px;height:32px;font-size:11px;flex-shrink:0">RA</div><div style="flex:1"><div class="cons-item-nome">Ricardo Amui</div><div class="cons-item-meta">Meta: 4 turmas/ano · Ticket: R$&nbsp;3.500</div></div><div class="cons-item-actions"><button class="icon-btn" onclick="editarCons(20)">Editar</button><button class="icon-btn del" onclick="pedirExclusao(20)">Remover</button></div></div><div class="cons-item"><div class="av" style="background:#5eead422;color:#5eead4;width:32px;height:32px;font-size:11px;flex-shrink:0">SF</div><div style="flex:1"><div class="cons-item-nome">Silvano Faina</div><div class="cons-item-meta">Meta: 5 turmas/ano · Ticket: R$&nbsp;3.500</div></div><div class="cons-item-actions"><button class="icon-btn" onclick="editarCons(21)">Editar</button><button class="icon-btn del" onclick="pedirExclusao(21)">Remover</button></div></div><div class="cons-item"><div class="av" style="background:#fbbf2422;color:#fbbf24;width:32px;height:32px;font-size:11px;flex-shrink:0">RJ</div><div style="flex:1"><div class="cons-item-nome">Roberto Júnior</div><div class="cons-item-meta">Meta: 5 turmas/ano · Ticket: R$&nbsp;3.500</div></div><div class="cons-item-actions"><button class="icon-btn" onclick="editarCons(22)">Editar</button><button class="icon-btn del" onclick="pedirExclusao(22)">Remover</button></div></div><div class="cons-item"><div class="av" style="background:#c084fc22;color:#c084fc;width:32px;height:32px;font-size:11px;flex-shrink:0">DP</div><div style="flex:1"><div class="cons-item-nome">Deysner PC</div><div class="cons-item-meta">Meta: 4 turmas/ano · Ticket: R$&nbsp;3.500</div></div><div class="cons-item-actions"><button class="icon-btn" onclick="editarCons(23)">Editar</button><button class="icon-btn del" onclick="pedirExclusao(23)">Remover</button></div></div><div class="cons-item"><div class="av" style="background:#34d39922;color:#34d399;width:32px;height:32px;font-size:11px;flex-shrink:0">JA</div><div style="flex:1"><div class="cons-item-nome">Josiane Alfaro</div><div class="cons-item-meta">Meta: 4 turmas/ano · Ticket: R$&nbsp;3.500</div></div><div class="cons-item-actions"><button class="icon-btn" onclick="editarCons(24)">Editar</button><button class="icon-btn del" onclick="pedirExclusao(24)">Remover</button></div></div><div class="cons-item"><div class="av" style="background:#4f8ef722;color:#4f8ef7;width:32px;height:32px;font-size:11px;flex-shrink:0">R</div><div style="flex:1"><div class="cons-item-nome">Rafael</div><div class="cons-item-meta">Meta: 4 turmas/ano · Ticket: R$&nbsp;3.500</div></div><div class="cons-item-actions"><button class="icon-btn" onclick="editarCons(25)">Editar</button><button class="icon-btn del" onclick="pedirExclusao(25)">Remover</button></div></div><div class="cons-item"><div class="av" style="background:#3ecf8e22;color:#3ecf8e;width:32px;height:32px;font-size:11px;flex-shrink:0">DS</div><div style="flex:1"><div class="cons-item-nome">Denys Samuel</div><div class="cons-item-meta">Meta: 4 turmas/ano · Ticket: R$&nbsp;3.500</div></div><div class="cons-item-actions"><button class="icon-btn" onclick="editarCons(26)">Editar</button><button class="icon-btn del" onclick="pedirExclusao(26)">Remover</button></div></div><div class="cons-item"><div class="av" style="background:#f7c44f22;color:#f7c44f;width:32px;height:32px;font-size:11px;flex-shrink:0">GC</div><div style="flex:1"><div class="cons-item-nome">Gustavo Cunha</div><div class="cons-item-meta">Meta: 4 turmas/ano · Ticket: R$&nbsp;3.500</div></div><div class="cons-item-actions"><button class="icon-btn" onclick="editarCons(27)">Editar</button><button class="icon-btn del" onclick="pedirExclusao(27)">Remover</button></div></div></div>
+      </div>
+    </div>
+    <!-- FORMULÁRIO -->
+    <div>
+      <div class="cd">
+        <div class="sh"><div class="st" id="form-gestao-title">Adicionar consultor</div></div>
+        <div class="fg3" style="margin-bottom:14px">
+          <div class="fm" style="grid-column:1/-1"><label>Nome completo</label><input type="text" id="g-nome" placeholder="Ex: Maria Silva"></div>
+          <div class="fm"><label>Meta turmas/ano</label><input type="number" id="g-meta" placeholder="Ex: 10" min="1"></div>
+          <div class="fm"><label>Ticket médio (R$)</label><input type="number" id="g-ticket" placeholder="Ex: 3500" min="0"></div>
+          <div class="fm"><label>Cidade base</label><input type="text" id="g-cidade" placeholder="Ex: Uberlândia"></div>
+        </div>
+        <div class="brow">
+          <button class="bp" id="btn-salvar-cons" onclick="salvarConsultor()">Adicionar</button>
+          <button class="bs" onclick="cancelarEdicao()">Cancelar</button>
+        </div>
+        <div id="gestao-msg" style="margin-top:10px;font-size:12px;display:none"></div>
+      </div>
+
+      <div class="cd" style="margin-top:14px">
+        <div class="sh"><div class="st">Backup completo do app</div></div>
+        <div style="background:#0a2a18;border:1px solid var(--gr2);border-left:3px solid var(--gr);border-radius:var(--sr);padding:10px 13px;font-size:12px;color:var(--tx2);margin-bottom:14px">
+          <b style="color:var(--gr)">Importante:</b> ao atualizar o arquivo HTML do app, faça o backup antes e restaure depois. Todos os dados (consultores, desempenho e lançamentos) serão preservados.
+        </div>
+        <div class="brow" style="margin-bottom:14px">
+          <button class="bp" onclick="backupCompleto()">⬇ Baixar backup</button>
+          <button class="bs" onclick="document.getElementById(&#39;restoreInput&#39;).click()">⬆ Restaurar backup</button>
+        </div>
+        <input type="file" id="restoreInput" accept=".json" style="display:none" onchange="restaurarBackup(this)">
+        <div style="height:1px;background:var(--bd);margin:14px 0"></div>
+        <div style="font-size:12px;color:var(--tx2);margin-bottom:10px">Importar / Exportar lista de consultores</div>
+        <div class="brow">
+          <button class="bs" onclick="exportarConsultores()">Exportar lista .txt</button>
+          <button class="bs" onclick="document.getElementById(&#39;importInput&#39;).click()">Importar lista .txt</button>
+        </div>
+        <input type="file" id="importInput" accept=".txt,.csv" style="display:none" onchange="importarConsultores(this)">
+        <div style="font-size:11px;color:var(--tx3);margin-top:8px">Formato: arquivo .txt com um nome por linha.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /wrap -->
+</div><!-- /app -->
+
+<!-- MODAL PLANEJAMENTO ANUAL -->
+<div class="plan-overlay" id="plan-overlay">
+  <div class="plan-modal">
+    <div class="plan-header">
+      <div class="plan-header-left">
+        <div class="plan-header-title">📅 Planejamento Anual — 2026</div>
+        <div class="plan-header-sub">Preencha os dados planejados para cada mês. Navegue pelos meses com as setas.</div>
+      </div>
+      <button class="plan-close" onclick="fecharPlanejamento()">✕</button>
+    </div>
+    <div class="plan-body">
+      <div class="plan-cons-row">
+        <div class="fm" style="flex:1;max-width:280px">
+          <label>Consultor</label>
+          <select id="plan-cons" onchange="onPlanConsChange()"><option value="">Selecione o consultor...</option><option value="1">Gérson Rodrigues</option><option value="2">José Leonardo</option><option value="3">Nédio Cerch</option><option value="4">Lucas Maia</option><option value="5">Liniker de Paula</option><option value="6">Leandro Miranda</option><option value="7">Miguel Faria</option><option value="8">Elisângela Débora</option><option value="9">Maria Elisa</option><option value="10">Thiago Bernini</option><option value="11">Lilian Miranda</option><option value="12">Hugo Borges</option><option value="13">Tiago Pinheiro</option><option value="14">Tiago Toledo</option><option value="15">Daniella Vilela</option><option value="16">Lidiane Guimarães</option><option value="17">Marcellos Versiani</option><option value="18">Arnaldo Amaral</option><option value="19">Marcos Neves</option><option value="20">Ricardo Amui</option><option value="21">Silvano Faina</option><option value="22">Roberto Júnior</option><option value="23">Deysner PC</option><option value="24">Josiane Alfaro</option><option value="25">Rafael</option><option value="26">Denys Samuel</option><option value="27">Gustavo Cunha</option></select>
+        </div>
+        <div style="font-size:12px;color:var(--tx3);align-self:flex-end;padding-bottom:2px" id="plan-cons-info">Meta: 10 turmas/ano · Ticket: R$&nbsp;3.500</div>
+      </div>
+      <div style="background:var(--bg3);border:1px solid var(--bd2);border-left:3px solid var(--pu);border-radius:var(--sr);padding:12px 16px;margin-bottom:16px">
+        <div style="font-size:11px;color:var(--pu);font-weight:600;text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px">Totais únicos no ano (preencha uma vez)</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div class="fm">
+            <label>Total de turmas únicas no ano</label>
+            <input type="number" id="plan-tp-anual" placeholder="Ex: 7" min="0" style="background:var(--bg4)">
+          </div>
+          <div class="fm">
+            <label>Total de empresas únicas no ano</label>
+            <input type="number" id="plan-ep-anual" placeholder="Ex: 89" min="0" style="background:var(--bg4)">
+          </div>
+        </div>
+        <div style="font-size:11px;color:var(--tx3);margin-top:8px">Esses valores são usados no total anual do dashboard. Mês a mês continua com os valores que você preencher abaixo.</div>
+      </div>
+      <!-- ABAS DOS MESES -->
+      <div class="plan-mes-tabs" id="plan-mes-tabs">
+        <div class="plan-mes-tab tem-dados" onclick="planIrMes(0,this)">Jan</div>
+        <div class="plan-mes-tab" onclick="planIrMes(1,this)">Fev</div>
+        <div class="plan-mes-tab on" onclick="planIrMes(2,this)">Mar</div>
+        <div class="plan-mes-tab" onclick="planIrMes(3,this)">Abr</div>
+        <div class="plan-mes-tab" onclick="planIrMes(4,this)">Mai</div>
+        <div class="plan-mes-tab" onclick="planIrMes(5,this)">Jun</div>
+        <div class="plan-mes-tab" onclick="planIrMes(6,this)">Jul</div>
+        <div class="plan-mes-tab" onclick="planIrMes(7,this)">Ago</div>
+        <div class="plan-mes-tab" onclick="planIrMes(8,this)">Set</div>
+        <div class="plan-mes-tab" onclick="planIrMes(9,this)">Out</div>
+        <div class="plan-mes-tab" onclick="planIrMes(10,this)">Nov</div>
+        <div class="plan-mes-tab" onclick="planIrMes(11,this)">Dez</div>
+      </div>
+      <!-- CONTEÚDO DO MÊS ATUAL -->
+      <div id="plan-mes-body"><div class="plan-mes-title">Março <span style="font-size:11px;color:var(--tx3);font-weight:400">2026</span></div><div class="plan-totais" id="plan-tot-2">
+    <div class="plan-total-item"><div class="plan-total-val" style="color:var(--tl)" id="ptv-tur-2">0</div><div class="plan-total-lbl">Turmas plan.</div></div>
+    <div class="plan-total-item"><div class="plan-total-val" style="color:var(--am)" id="ptv-emp-2">0</div><div class="plan-total-lbl">Empresas plan.</div></div>
+    <div class="plan-total-item"><div class="plan-total-val" style="color:var(--gr)" id="ptv-fat-2">R$&nbsp;0</div><div class="plan-total-lbl">Fat. planejado</div></div>
+  </div><div class="plan-semanas"><div class="plan-semana">
+      <div class="plan-semana-header">
+        <span class="plan-semana-label">Semana 1</span>
+        <span class="plan-semana-period">01 a 07</span>
+      </div>
+      <div class="plan-semana-fields">
+        <div class="fm"><label>Cidade / Turma</label><input type="text" id="ps_2_0_cidade" value="" placeholder="Ex: Uberaba 18" oninput="recalcPlanTot(2)"></div>
+        <div class="fm"><label>Nº Encontro</label><input type="number" id="ps_2_0_enc" value="" placeholder="1-7" min="1" max="7"></div>
+        <div class="fm"><label>Emp. únicas plan.</label><input type="number" id="ps_2_0_ep" value="" placeholder="0" min="0" oninput="recalcPlanTot(2)"></div>
+      </div>
+      <div class="plan-semana-fields" style="margin-top:8px;grid-template-columns:1fr 1fr 1fr 1fr">
+        <div class="fm" style="grid-column:3/5"><label>Fat. planejado (R$)</label><input type="number" id="ps_2_0_fp" value="" placeholder="0" min="0" oninput="recalcPlanTot(2)"></div>
+      </div>
+    </div><div class="plan-semana">
+      <div class="plan-semana-header">
+        <span class="plan-semana-label">Semana 2</span>
+        <span class="plan-semana-period">08 a 14</span>
+      </div>
+      <div class="plan-semana-fields">
+        <div class="fm"><label>Cidade / Turma</label><input type="text" id="ps_2_1_cidade" value="" placeholder="Ex: Uberaba 18" oninput="recalcPlanTot(2)"></div>
+        <div class="fm"><label>Nº Encontro</label><input type="number" id="ps_2_1_enc" value="" placeholder="1-7" min="1" max="7"></div>
+        <div class="fm"><label>Emp. únicas plan.</label><input type="number" id="ps_2_1_ep" value="" placeholder="0" min="0" oninput="recalcPlanTot(2)"></div>
+      </div>
+      <div class="plan-semana-fields" style="margin-top:8px;grid-template-columns:1fr 1fr 1fr 1fr">
+        <div class="fm" style="grid-column:3/5"><label>Fat. planejado (R$)</label><input type="number" id="ps_2_1_fp" value="" placeholder="0" min="0" oninput="recalcPlanTot(2)"></div>
+      </div>
+    </div><div class="plan-semana">
+      <div class="plan-semana-header">
+        <span class="plan-semana-label">Semana 3</span>
+        <span class="plan-semana-period">15 a 21</span>
+      </div>
+      <div class="plan-semana-fields">
+        <div class="fm"><label>Cidade / Turma</label><input type="text" id="ps_2_2_cidade" value="" placeholder="Ex: Uberaba 18" oninput="recalcPlanTot(2)"></div>
+        <div class="fm"><label>Nº Encontro</label><input type="number" id="ps_2_2_enc" value="" placeholder="1-7" min="1" max="7"></div>
+        <div class="fm"><label>Emp. únicas plan.</label><input type="number" id="ps_2_2_ep" value="" placeholder="0" min="0" oninput="recalcPlanTot(2)"></div>
+      </div>
+      <div class="plan-semana-fields" style="margin-top:8px;grid-template-columns:1fr 1fr 1fr 1fr">
+        <div class="fm" style="grid-column:3/5"><label>Fat. planejado (R$)</label><input type="number" id="ps_2_2_fp" value="" placeholder="0" min="0" oninput="recalcPlanTot(2)"></div>
+      </div>
+    </div><div class="plan-semana">
+      <div class="plan-semana-header">
+        <span class="plan-semana-label">Semana 4</span>
+        <span class="plan-semana-period">22 a 28</span>
+      </div>
+      <div class="plan-semana-fields">
+        <div class="fm"><label>Cidade / Turma</label><input type="text" id="ps_2_3_cidade" value="" placeholder="Ex: Uberaba 18" oninput="recalcPlanTot(2)"></div>
+        <div class="fm"><label>Nº Encontro</label><input type="number" id="ps_2_3_enc" value="" placeholder="1-7" min="1" max="7"></div>
+        <div class="fm"><label>Emp. únicas plan.</label><input type="number" id="ps_2_3_ep" value="" placeholder="0" min="0" oninput="recalcPlanTot(2)"></div>
+      </div>
+      <div class="plan-semana-fields" style="margin-top:8px;grid-template-columns:1fr 1fr 1fr 1fr">
+        <div class="fm" style="grid-column:3/5"><label>Fat. planejado (R$)</label><input type="number" id="ps_2_3_fp" value="" placeholder="0" min="0" oninput="recalcPlanTot(2)"></div>
+      </div>
+    </div><div class="plan-semana">
+      <div class="plan-semana-header">
+        <span class="plan-semana-label">Semana 5</span>
+        <span class="plan-semana-period">29 a 31</span>
+      </div>
+      <div class="plan-semana-fields">
+        <div class="fm"><label>Cidade / Turma</label><input type="text" id="ps_2_4_cidade" value="" placeholder="Ex: Uberaba 18" oninput="recalcPlanTot(2)"></div>
+        <div class="fm"><label>Nº Encontro</label><input type="number" id="ps_2_4_enc" value="" placeholder="1-7" min="1" max="7"></div>
+        <div class="fm"><label>Emp. únicas plan.</label><input type="number" id="ps_2_4_ep" value="" placeholder="0" min="0" oninput="recalcPlanTot(2)"></div>
+      </div>
+      <div class="plan-semana-fields" style="margin-top:8px;grid-template-columns:1fr 1fr 1fr 1fr">
+        <div class="fm" style="grid-column:3/5"><label>Fat. planejado (R$)</label><input type="number" id="ps_2_4_fp" value="" placeholder="0" min="0" oninput="recalcPlanTot(2)"></div>
+      </div>
+    </div></div><div class="plan-nav">
+    <button class="btn-plan-nav" onclick="planNavMes(-1)">← Mês anterior</button>
+    <span style="font-size:12px;color:var(--tx3)">3 de 12</span>
+    <button class="btn-plan-nav" onclick="planNavMes(1)">Próximo mês →</button>
+  </div></div>
+    </div>
+    <div class="plan-footer">
+      <button class="bs" onclick="fecharPlanejamento()">Cancelar</button>
+      <button class="bp" onclick="salvarPlanejamento()">Salvar planejamento</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CONFIRMAR EXCLUSÃO -->
+<div class="modal-overlay" id="modal-del">
+  <div class="modal">
+    <div class="modal-title">Remover consultor?</div>
+    <div style="font-size:13px;color:var(--tx2);margin-bottom:4px">Consultor: <strong id="modal-del-nome" style="color:var(--tx)"></strong></div>
+    <div style="font-size:12px;color:var(--tx3)">Os dados de desempenho associados a este consultor serão removidos. Esta ação não pode ser desfeita.</div>
+    <div class="modal-actions">
+      <button class="bs" onclick="fecharModal()">Cancelar</button>
+      <button class="bd-btn" onclick="confirmarExclusao()">Remover</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" style="border-color: var(--gr);">Planejamento de Gérson Rodrigues salvo — 6 mêses atualizados!</div>
+
+<script>
+// ─── LOGO ────────────────────────────────────────────────────────────────────
+(function(){
+  var b='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';
+  var img=new Image();
+  img.onload=function(){var c=document.getElementById('logoCanvas');if(c)c.getContext('2d').drawImage(img,0,0,135,36);};
+  img.src='data:image/png;base64,'+b;
+})();
+
+// ─── DADOS ───────────────────────────────────────────────────────────────────
+const MS=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+const MN=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+const AVC=['#4f8ef7','#3ecf8e','#f7c44f','#a78bfa','#2dd4bf','#f76e6e','#f7904f','#7ab3ff','#5eead4','#fbbf24','#c084fc','#34d399'];
+const CH={};
+
+// Lista de consultores — salva no localStorage
+const CONS_DEFAULT=[
+  {id:1,n:'Gérson Rodrigues',mt:12,tk:3500,cidade:'Uberaba'},
+  {id:2,n:'José Leonardo',mt:10,tk:3500,cidade:'Londrina'},
+  {id:3,n:'Nédio Cerch',mt:9,tk:3500,cidade:''},
+  {id:4,n:'Lucas Maia',mt:8,tk:3500,cidade:''},
+  {id:5,n:'Liniker de Paula',mt:8,tk:3500,cidade:''},
+  {id:6,n:'Leandro Miranda',mt:9,tk:3500,cidade:''},
+  {id:7,n:'Miguel Faria',mt:10,tk:3500,cidade:''},
+  {id:8,n:'Elisângela Débora',mt:6,tk:3500,cidade:''},
+  {id:9,n:'Maria Elisa',mt:6,tk:3500,cidade:''},
+  {id:10,n:'Thiago Bernini',mt:7,tk:3500,cidade:''},
+  {id:11,n:'Lilian Miranda',mt:8,tk:3500,cidade:''},
+  {id:12,n:'Hugo Borges',mt:8,tk:3500,cidade:''},
+  {id:13,n:'Tiago Pinheiro',mt:6,tk:3500,cidade:''},
+  {id:14,n:'Tiago Toledo',mt:6,tk:3500,cidade:''},
+  {id:15,n:'Daniella Vilela',mt:7,tk:3500,cidade:''},
+  {id:16,n:'Lidiane Guimarães',mt:8,tk:3500,cidade:''},
+  {id:17,n:'Marcellos Versiani',mt:6,tk:3500,cidade:''},
+  {id:18,n:'Arnaldo Amaral',mt:6,tk:3500,cidade:''},
+  {id:19,n:'Marcos Neves',mt:5,tk:3500,cidade:''},
+  {id:20,n:'Ricardo Amui',mt:4,tk:3500,cidade:''},
+  {id:21,n:'Silvano Faina',mt:5,tk:3500,cidade:''},
+  {id:22,n:'Roberto Júnior',mt:5,tk:3500,cidade:''},
+  {id:23,n:'Deysner PC',mt:4,tk:3500,cidade:''},
+  {id:24,n:'Josiane Alfaro',mt:4,tk:3500,cidade:''},
+  {id:25,n:'Rafael',mt:4,tk:3500,cidade:''},
+  {id:26,n:'Denys Samuel',mt:4,tk:3500,cidade:''},
+  {id:27,n:'Gustavo Cunha',mt:4,tk:3500,cidade:''},
+];
+
+const SPE_KEY='spe_state_v11'; // v8: anual usa max(tp/ep) por mês // v7: total anual deduplica turmas/empresas únicas
+// Limpa TODAS as chaves antigas automaticamente
+try{['spe_state_v1','spe_state_v2','spe_state_v3','spe_state_v4','spe_state_v5','spe_state_v6','spe_state_v7','spe_state_v8','spe_state_v9','spe_state_v10','spe_cons'].forEach(k=>localStorage.removeItem(k));}catch(e){}
+
+function saveState(){
+  try{
+    localStorage.setItem(SPE_KEY, JSON.stringify({
+      cons: CONS,
+      md:   MD,
+      lancs:LANCS,
+      planBufs: savedPlanBuffers,
+      anualTotais: anualTotais,
+      ts:   new Date().toISOString()
+    }));
+  }catch(e){}
+}
+
+function loadState(){
+  try{
+    const raw=localStorage.getItem(SPE_KEY);
+    if(raw){
+      const s=JSON.parse(raw);
+      return s;
+    }
+  }catch(e){}
+  // fallback: tenta chave antiga
+  try{
+    const old=localStorage.getItem('spe_cons');
+    if(old) return {cons:JSON.parse(old), md:null, lancs:null};
+  }catch(e){}
+  return null;
+}
+
+// Carrega state antes de tudo
+const _state = loadState();
+let CONS = _state && _state.cons ? _state.cons : CONS_DEFAULT;
+
+// Dados de desempenho — inicializa com zeros para todos os consultores/meses.
+// Nenhum valor é gerado aleatoriamente: planejado vem do modal "Planejar ano todo"
+// e realizado vem dos lançamentos manuais.
+const MD={};
+function buildMD(){
+  CONS.forEach(c=>{
+    if(!MD[c.id]){
+      MD[c.id]=Array.from({length:12},()=>({tp:0,ep:0,tr:0,er:0,fp:0,fr:0}));
+    }
+  });
+}
+buildMD();
+
+// Todos os dados são inseridos manualmente pelo usuário via Lançamento e Planejamento.
+
+// GL — totais mensais da equipe. Jan-Mar com dados reais; Abr-Dez aguardam lançamentos.
+const GL=[
+  {tp:0,ep:0,tr:0,er:0,fp:0,fr:0},
+  {tp:0,ep:0,tr:0,er:0,fp:0,fr:0},
+  {tp:0,ep:0,tr:0,er:0,fp:0,fr:0},
+  {tp:0,ep:0,tr:0,er:0,fp:0,fr:0},
+  {tp:0,ep:0,tr:0,er:0,fp:0,fr:0},
+  {tp:0,ep:0,tr:0,er:0,fp:0,fr:0},
+  {tp:0,ep:0,tr:0,er:0,fp:0,fr:0},
+  {tp:0,ep:0,tr:0,er:0,fp:0,fr:0},
+  {tp:0,ep:0,tr:0,er:0,fp:0,fr:0},
+  {tp:0,ep:0,tr:0,er:0,fp:0,fr:0},
+  {tp:0,ep:0,tr:0,er:0,fp:0,fr:0},
+  {tp:0,ep:0,tr:0,er:0,fp:0,fr:0},
+];
+
+// Restaura MD e GL do state salvo (GL já declarado acima)
+if(_state && _state.md){
+  Object.keys(_state.md).forEach(id=>{
+    const cid=parseInt(id);
+    if(Array.isArray(_state.md[id])) MD[cid]=_state.md[id];
+  });
+}
+
+// GL não é restaurado do state: é sempre definido acima com dados reais de Jan-Mar
+// e completado pelos lançamentos. Isso evita que dados antigos/inflados reapareçam.
+
+const LANCS=(_state && Array.isArray(_state.lancs)) ? _state.lancs : [];
+// savedPlanBuffers[cid] = planBuffer salvo — usado para dedup anual sem modal aberto
+const savedPlanBuffers=(_state && _state.planBufs) ? _state.planBufs : {};
+// anualTotais[cid] = {tp, ep} — totais únicos anuais informados pelo consultor no modal
+const anualTotais=(_state && _state.anualTotais) ? _state.anualTotais : {};
+let CM=0,SC=null,editId=null,delId=null;
+
+// ─── HELPERS ─────────────────────────────────────────────────────────────────
+const f=n=>Math.round(n).toLocaleString('pt-BR');
+const fR=n=>'R$\u00a0'+Math.round(n).toLocaleString('pt-BR');
+const adh=(r,p)=>!p?(r>0?100:0):Math.round(r/p*100);
+const ac=p=>p>=90?'var(--gr)':p>=70?'var(--am)':'var(--rd)';
+const ini=n=>{const p=n.split(' ');return(p[0][0]+(p.length>1?p[p.length-1][0]:'')).toUpperCase();};
+const dc=id=>{if(CH[id]){CH[id].destroy();delete CH[id];}};
+function g(id){return document.getElementById(id);}
+function v(id){return g(id)?g(id).value:'';}
+
+// Reconstrói GL somando MD de todos os consultores — chamada antes de qualquer render
+function recalcGL(){
+  for(let mi=0;mi<12;mi++){
+    GL[mi]={tp:0,ep:0,tr:0,er:0,fp:0,fr:0};
+    CONS.forEach(c=>{
+      const m=MD[c.id]?MD[c.id][mi]:{tp:0,ep:0,tr:0,er:0,fp:0,fr:0};
+      GL[mi].tp+=m.tp||0;
+      GL[mi].ep+=m.ep||0;
+      GL[mi].tr+=m.tr||0;
+      GL[mi].er+=m.er||0;
+      GL[mi].fp+=m.fp||0;
+      GL[mi].fr+=m.fr||0;
+    });
+  }
+}
+
+// Calcula total anual de turmas únicas e empresas únicas a partir dos LANCS + planBuffer
+// Regra: mesma turma (nome) em meses diferentes → conta 1 vez no ano
+function anualDedup(cid){
+  const D=MD[cid];
+  if(!D) return{tp:0,ep:0,tr:0,er:0,fp:0,fr:0};
+
+  // ── PLANEJADO ──────────────────────────────────────────────────────────────
+  // tp/ep: usa valor informado diretamente no modal (campo "totais únicos no ano")
+  // fp: soma de todos os meses (faturamento acumula)
+  const tpAnual = anualTotais[cid] && anualTotais[cid].tp ? anualTotais[cid].tp : null;
+  const epAnual = anualTotais[cid] && anualTotais[cid].ep ? anualTotais[cid].ep : null;
+  let maxTp=0, maxEp=0, totFp=0;
+  D.forEach(m=>{
+    if(!Array.isArray(D) && m.tp===undefined) return;
+    if((m.tp||0) > maxTp) maxTp = m.tp||0;
+    if((m.ep||0) > maxEp) maxEp = m.ep||0;
+    totFp += m.fp||0;
+  });
+
+  // ── REALIZADO ──────────────────────────────────────────────────────────────
+  // tr: turmas únicas realizadas no ano, pelo nome (cid2) nos LANCS
+  // er: soma das empresas únicas por turma (maior valor de cada turma no ano)
+  // fr: soma total do faturamento realizado
+  const trMap = {}, erMap = {};
+  let trSemNome = 0, erSemNome = 0, totFr = 0;
+  LANCS.filter(l => l.cid === cid).forEach(l => {
+    const key = (l.cid2||'').trim().toLowerCase();
+    totFr += l.fat||0;
+    if(key){
+      trMap[key] = true; // marca turma como realizada
+      if(!erMap[key] || (l.emp||0) > erMap[key]) erMap[key] = l.emp||0;
+    } else {
+      trSemNome++;
+      erSemNome += l.emp||0;
+    }
+  });
+  const totTr = Object.keys(trMap).length + trSemNome;
+  const totEr = Object.values(erMap).reduce((s,v)=>s+v,0) + erSemNome;
+
+  return{
+    tp: tpAnual !== null ? tpAnual : maxTp,
+    ep: epAnual !== null ? epAnual : maxEp,
+    tr: totTr,
+    er: totEr,
+    fp: totFp,
+    fr: totFr
+  };
+}
+
+// Calcula total anual da equipe dedupando por consultor
+function anualDedupGL(){
+  // Soma o anualDedup de cada consultor para o total da equipe
+  let tp=0,ep=0,tr=0,er=0,fp=0,fr=0;
+  CONS.forEach(c=>{
+    const a=anualDedup(c.id);
+    tp+=a.tp; ep+=a.ep; tr+=a.tr; er+=a.er; fp+=a.fp; fr+=a.fr;
+  });
+  return{tp,ep,tr,er,fp,fr};
+}
+
+function gr(mi){
+  if(mi===-1) return anualDedupGL();
+  return{...GL[mi]};
+}
+function gcr(cid,mi){
+  const D=MD[cid];
+  if(!D) return{tp:0,ep:0,tr:0,er:0,fp:0,fr:0};
+  if(mi===-1) return anualDedup(cid);
+  return{...D[mi]};
+}
+
+// ─── NAVEGAÇÃO ───────────────────────────────────────────────────────────────
+function sv(v,btn){
+  document.querySelectorAll('.view').forEach(e=>e.classList.remove('on'));
+  document.querySelectorAll('.nb').forEach(e=>e.classList.remove('on'));
+  document.getElementById('view-'+v).classList.add('on');
+  if(btn)btn.classList.add('on');
+  if(v==='dashboard')rd();
+  if(v==='ranking')rr();
+  if(v==='relatorios')rrel();
+  if(v==='consultores')rcl();
+  if(v==='gestao')renderGestao();
+}
+
+function sm(m,el){document.querySelectorAll('#mchips .mc').forEach(e=>e.classList.remove('on'));el.classList.add('on');CM=m;rds();}
+
+// ─── DASHBOARD ───────────────────────────────────────────────────────────────
+function rd(){recalcGL();rds();rdc();}
+function rds(){
+  const r=gr(CM);const aT=adh(r.tr,r.tp),aE=adh(r.er,r.ep),aF=adh(r.fr,r.fp);
+  g('dstats').innerHTML=`<div class="sc tl"><div class="sl">Turmas planejadas</div><div class="sv">${f(r.tp)}</div><div class="ss">${CM===-1?'meta anual':MN[CM]}</div></div><div class="sc bl"><div class="sl">Turmas realizadas</div><div class="sv" style="color:${ac(aT)}">${f(r.tr)}</div><div class="ss ${aT>=70?'up':'dn'}">${aT}% da meta</div></div><div class="sc pu"><div class="sl">Empresas únicas plan.</div><div class="sv">${f(r.ep)}</div><div class="ss">${CM===-1?'meta anual':MN[CM]}</div></div><div class="sc am"><div class="sl">Empresas únicas real.</div><div class="sv" style="color:${ac(aE)}">${f(r.er)}</div><div class="ss ${aE>=70?'up':'dn'}">${aE}% da meta</div></div><div class="sc gr"><div class="sl">Faturamento realizado</div><div class="sv" style="font-size:17px">${fR(r.fr)}</div><div class="ss ${aF>=70?'up':'dn'}">${aF}% de ${fR(r.fp)}</div></div>`;
+}
+function rdc(){
+  dc('cT');dc('cE');dc('cA');dc('cTop');dc('cMeta');
+  const co={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'#1a1e28'},ticks:{color:'#4a5570',font:{size:10},autoSkip:false,maxRotation:0}},y:{grid:{color:'#1a1e28'},ticks:{color:'#4a5570',font:{size:10}}}}};
+  CH['cT']=new Chart(g('cT'),{type:'bar',data:{labels:MS,datasets:[{label:'Plan.',data:GL.map(g=>g.tp),backgroundColor:'#1a3a6a',borderColor:'#4f8ef7',borderWidth:1,borderRadius:3},{label:'Real.',data:GL.map(g=>g.tr),backgroundColor:'#1a3a2a',borderColor:'#3ecf8e',borderWidth:1,borderRadius:3}]},options:co});
+  CH['cE']=new Chart(g('cE'),{type:'bar',data:{labels:MS,datasets:[{label:'Plan.',data:GL.map(g=>g.ep),backgroundColor:'#2a1a5a',borderColor:'#a78bfa',borderWidth:1,borderRadius:3},{label:'Real.',data:GL.map(g=>g.er),backgroundColor:'#3a2a0a',borderColor:'#f7c44f',borderWidth:1,borderRadius:3}]},options:co});
+  CH['cA']=new Chart(g('cA'),{type:'line',data:{labels:MS,datasets:[{label:'Turmas %',data:GL.map(g=>g.tr>0?adh(g.tr,g.tp):null),borderColor:'#2dd4bf',backgroundColor:'#2dd4bf18',tension:0.4,fill:true,pointBackgroundColor:'#2dd4bf',pointRadius:3,spanGaps:false},{label:'Empresas %',data:GL.map(g=>g.er>0?adh(g.er,g.ep):null),borderColor:'#f7c44f',backgroundColor:'transparent',tension:0.4,borderDash:[4,4],pointBackgroundColor:'#f7c44f',pointRadius:3,spanGaps:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,labels:{color:'#8892aa',font:{size:10},padding:8}}},scales:{x:{grid:{color:'#1a1e28'},ticks:{color:'#4a5570',font:{size:10},autoSkip:false,maxRotation:0}},y:{grid:{color:'#1a1e28'},ticks:{color:'#4a5570',font:{size:10},callback:v=>v+'%'},min:0,max:120}}}});
+  const top=CONS.map((c,i)=>{const r=gcr(c.id,-1);return{n:c.n.split(' ')[0],fr:r.fr};}).sort((a,b)=>b.fr-a.fr).slice(0,8);
+  CH['cTop']=new Chart(g('cTop'),{type:'bar',data:{labels:top.map(t=>t.n),datasets:[{label:'Fat.',data:top.map(t=>t.fr),backgroundColor:top.map((_,i)=>i<3?'#f7c44f33':'#4f8ef722'),borderColor:top.map((_,i)=>i<3?'#f7c44f':'#4f8ef7'),borderWidth:1,borderRadius:3}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'#1a1e28'},ticks:{color:'#4a5570',font:{size:9},callback:v=>'R$'+Math.round(v/1000)+'k'}},y:{grid:{color:'transparent'},ticks:{color:'#8892aa',font:{size:10}}}}}});
+  // ── Meta anual vs realizado acumulado — 3 fatores com números
+  // Usa apenas consultores que têm planejamento efetivamente inserido no MD
+  // tp/ep/fp planejados = somados via anualDedup de cada consultor
+  let metaTurmas=0, metaEmpresas=0, metaFat=0;
+  CONS.forEach(c=>{
+    const a=anualDedup(c.id);
+    metaTurmas  += a.tp||0;
+    metaEmpresas+= a.ep||0;
+    metaFat     += a.fp||0;
+  });
+  // Realizado anual: usa anualDedupGL para turmas e empresas únicas (não soma mensal)
+  const _realAnual  = anualDedupGL();
+  const realTurmas  = _realAnual.tr;
+  const realEmpresas= _realAnual.er;
+  const realFat     = _realAnual.fr;
+  const pTurmas  = metaTurmas  ? Math.round(realTurmas  /metaTurmas  *100) : 0;
+  const pEmpresas= metaEmpresas? Math.round(realEmpresas/metaEmpresas*100) : 0;
+  const pFat     = metaFat     ? Math.round(realFat     /metaFat     *100) : 0;
+  const colorP = p => p>=90?'var(--gr)':p>=70?'var(--am)':'var(--rd)';
+
+  // Números acima do gráfico
+  g('meta-nums').innerHTML=[
+    {lbl:'Turmas',    real:f(realTurmas),   meta:f(metaTurmas),   pct:pTurmas,   cor:'#4f8ef7'},
+    {lbl:'Empresas',  real:f(realEmpresas), meta:f(metaEmpresas), pct:pEmpresas, cor:'#a78bfa'},
+    {lbl:'Faturamento',real:fR(realFat),    meta:fR(metaFat),     pct:pFat,      cor:'#f7c44f'},
+  ].map(it=>`
+    <div style="background:var(--bg3);border-radius:var(--sr);padding:10px 12px">
+      <div style="font-size:10px;color:var(--tx3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px">${it.lbl}</div>
+      <div style="display:flex;align-items:baseline;gap:5px;margin-bottom:3px">
+        <span style="font-family:var(--fh);font-size:18px;font-weight:700;color:${colorP(it.pct)}">${it.real}</span>
+        <span style="font-size:11px;color:var(--tx3)">/ ${it.meta}</span>
+      </div>
+      <div style="height:4px;background:var(--bd);border-radius:2px;overflow:hidden;margin-bottom:4px">
+        <div style="height:100%;width:${Math.min(it.pct,100)}%;background:${colorP(it.pct)};border-radius:2px"></div>
+      </div>
+      <div style="font-size:11px;font-weight:600;color:${colorP(it.pct)}">${it.pct}% da meta</div>
+    </div>`).join('');
+
+  // Gráfico de barras horizontal — normalizado em % para comparar os 3 fatores numa escala
+  CH['cMeta']=new Chart(g('cMeta'),{
+    type:'bar',
+    data:{
+      labels:['Turmas','Empresas','Faturamento'],
+      datasets:[
+        {label:'Meta (100%)',
+         data:[100,100,100],
+         backgroundColor:['#1a3a6a55','#2a1a5a55','#1f140a55'],
+         borderColor:['#4f8ef7','#a78bfa','#f7c44f'],
+         borderWidth:1, borderRadius:4},
+        {label:'Realizado (%)',
+         data:[pTurmas,pEmpresas,pFat],
+         backgroundColor:['#1a3a2a','#251060','#3a2a0a'],
+         borderColor:['#3ecf8e','#7ab3ff','#f7c44f'],
+         borderWidth:1, borderRadius:4}
+      ]
+    },
+    options:{
+      indexAxis:'y',
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{display:true,labels:{color:'#8892aa',font:{size:10},padding:8,boxWidth:10}},
+        tooltip:{callbacks:{
+          label:function(ctx){
+            const i=ctx.dataIndex;
+            if(ctx.datasetIndex===0){
+              return i===2?'Meta: '+fR(metaFat):'Meta: '+f(i===0?metaTurmas:metaEmpresas);
+            }
+            const pct=[pTurmas,pEmpresas,pFat][i];
+            const real=i===2?fR(realFat):f(i===0?realTurmas:realEmpresas);
+            return 'Realizado: '+real+' ('+pct+'%)';
+          }
+        }}
+      },
+      scales:{
+        x:{display:true,min:0,max:110,grid:{color:'#1a1e28'},
+           ticks:{color:'#4a5570',font:{size:9},callback:v=>v+'%'}},
+        y:{grid:{color:'transparent'},ticks:{color:'#8892aa',font:{size:11}}}
+      }
+    }
+  });
+}
+
+// ─── CONSULTORES ─────────────────────────────────────────────────────────────
+function rcl(fil=''){
+  const grid=g('cgrid');
+  const list=CONS.filter(c=>c.n.toLowerCase().includes(fil.toLowerCase()));
+  grid.innerHTML=list.map((c,i)=>{
+    const r=gcr(c.id,-1);const aT=adh(r.tr,r.tp);const col=AVC[i%AVC.length];
+    return`<div class="cc${SC===c.id?' sel':''}" onclick="oc(${c.id})"><div style="display:flex;align-items:center;gap:9px;margin-bottom:8px"><div class="av" style="background:${col}22;color:${col}">${ini(c.n)}</div><div><div style="font-weight:500;color:var(--tx);font-size:13px">${c.n}</div><div style="font-size:10px;color:var(--tx3)">Meta: ${f(c.mt)} turmas/ano</div></div></div><div class="ck4"><div class="ck"><div class="v" style="color:var(--tl)">${f(r.tr)}</div><div class="l">Turmas</div></div><div class="ck"><div class="v" style="color:var(--am)">${f(r.er)}</div><div class="l">Empresas</div></div><div class="ck"><div class="v" style="font-size:11px;color:var(--ac)">${fR(r.fr)}</div><div class="l">Fat.</div></div><div class="ck"><div class="v" style="color:${ac(aT)}">${aT}%</div><div class="l">Ader.</div></div></div><div class="ab"><div class="af" style="width:${Math.min(aT,100)}%;background:${ac(aT)}"></div></div></div>`;
+  }).join('');
+}
+function fc(val){rcl(val);}
+function oc(id){
+  SC=id;rcl(v('srch'));
+  const c=CONS.find(x=>x.id===id);const col=AVC[CONS.indexOf(c)%AVC.length];
+  const D=MD[id];const tot=gcr(id,-1);const aT=adh(tot.tr,tot.tp);
+  const rows=D?D.map((m,i)=>{const at=adh(m.tr,m.tp),ae=adh(m.er,m.ep);const pc=at>=90?'pg':at>=70?'pa':m.tr===0?'pz':'pr';const pe=ae>=90?'pg':ae>=70?'pa':m.er===0?'pz':'pr';return`<tr><td style="color:var(--tx)">${MN[i]}</td><td><span class="pl pt">${f(m.tp)}</span></td><td><span class="pl ${pc}">${f(m.tr)}</span></td><td>${f(m.ep)}</td><td><span class="pl ${pe}">${f(m.er)}</span></td><td style="font-size:11px">${fR(m.fp)}</td><td style="font-size:11px;color:var(--gr)">${fR(m.fr)}</td><td><span class="pl ${pc}">${at}%</span></td><td><span class="pl ${pe}">${ae}%</span></td></tr>`;}).join(''):'';
+  const panel=g('cdet');panel.style.display='block';
+  panel.innerHTML=`<div class="dp"><div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--bd)"><div class="av" style="width:48px;height:48px;font-size:16px;background:${col}22;color:${col}">${ini(c.n)}</div><div style="flex:1"><div style="font-family:var(--fh);font-size:17px;font-weight:700">${c.n}</div><div style="font-size:11px;color:var(--tx2);margin-top:2px">Meta: ${f(c.mt)} turmas/ano · Ticket: ${fR(c.tk)}${c.cidade?' · '+c.cidade:''}</div></div><div style="text-align:right"><div style="font-size:10px;color:var(--tx3);margin-bottom:2px">ADERÊNCIA TURMAS</div><div style="font-family:var(--fh);font-size:26px;font-weight:700;color:${ac(aT)}">${aT}%</div><div style="font-size:10px;color:var(--tx3)">${f(tot.tr)} de ${f(tot.tp)} turmas</div></div></div><div class="dk"><div class="kb"><div class="kv" style="color:var(--tl)">${f(tot.tp)}</div><div class="kl">Turmas plan.</div></div><div class="kb"><div class="kv" style="color:var(--tl)">${f(tot.tr)}</div><div class="kl">Turmas real.</div></div><div class="kb"><div class="kv" style="color:var(--am)">${f(tot.ep)}</div><div class="kl">Emp. plan.</div></div><div class="kb"><div class="kv" style="color:var(--am)">${f(tot.er)}</div><div class="kl">Emp. real.</div></div><div class="kb"><div class="kv" style="font-size:14px">${fR(tot.fr)}</div><div class="kl">Fat. realizado</div></div></div><div class="tw"><table><thead><tr><th>Mês</th><th>Turmas Plan.</th><th>Turmas Real.</th><th>Emp. Plan.</th><th>Emp. Real.</th><th>Fat. Plan.</th><th>Fat. Real.</th><th>Ader. Turmas</th><th>Ader. Emp.</th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
+  panel.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+// ─── LANÇAMENTO ──────────────────────────────────────────────────────────────
+function popularSelects(){
+  ['lcon'].forEach(id=>{const s=g(id);if(!s)return;const cur=s.value;s.innerHTML='<option value="">Selecione...</option>';CONS.forEach(c=>{s.innerHTML+=`<option value="${c.id}">${c.n}</option>`;});s.value=cur;});
+  const rs=g('rsel');if(rs){rs.innerHTML='<option value="">Selecione...</option>';CONS.forEach(c=>{rs.innerHTML+=`<option value="${c.id}">${c.n}</option>`;});}
+}
+// Recalcula tr e er de um consultor/mês a partir dos LANCS, deduplicando por cidade/turma.
+// Regra: mesma cidade/turma no mesmo mês →
+//   - conta como 1 turma (tr)
+//   - usa o maior valor de empresas informado (er)
+// Turmas sem nome (cidade vazia) cada lançamento conta separadamente.
+function recalcMes(cid, mes){
+  const entradas = LANCS.filter(l => l.cid===cid && l.mes===mes);
+  const turmaMap = {}; // key → maior emp
+  let trSemNome = 0, erSemNome = 0, frTotal = 0;
+
+  entradas.forEach(l => {
+    const key = (l.cid2||'').trim().toLowerCase();
+    frTotal += l.fat||0;
+    if(key){
+      if(!turmaMap[key] || (l.emp||0) > turmaMap[key]) turmaMap[key] = l.emp||0;
+    } else {
+      trSemNome++;
+      erSemNome += l.emp||0;
+    }
+  });
+
+  const trNomeadas = Object.keys(turmaMap).length;
+  const erNomeadas = Object.values(turmaMap).reduce((s,v)=>s+v, 0);
+
+  return {
+    tr: trNomeadas + trSemNome,   // turmas únicas nomeadas + sem nome
+    er: erNomeadas + erSemNome,   // empresas dedupadas por turma
+    fr: frTotal
+  };
+}
+
+function lancar(){
+  const cid=parseInt(v('lcon'));const mes=parseInt(v('lmes'));const sem=parseInt(v('lsem'));const cid2=v('lcid').trim();
+  const emp=parseFloat(v('lemp'))||0;const ep=parseFloat(v('lep'))||0;const fat=parseFloat(v('lfat'))||0;const fp=parseFloat(v('lfp'))||0;
+  if(!cid){toast('Selecione um consultor','e');return;}
+  if(!MD[cid])MD[cid]=Array.from({length:12},()=>({tp:0,ep:0,tr:0,er:0,fp:0,fr:0}));
+  const c=CONS.find(x=>x.id===cid);
+  LANCS.unshift({cid,n:c?c.n:'',mes,sem,cid2,emp,fat});
+  // Recalcula o mês com deduplicação por turma
+  const rec = recalcMes(cid, mes);
+  MD[cid][mes].tr = rec.tr;
+  MD[cid][mes].er = rec.er;
+  MD[cid][mes].fr = rec.fr;
+  if(ep>0) MD[cid][mes].ep = Math.max(MD[cid][mes].ep, ep);
+  if(fp>0) MD[cid][mes].fp += fp;
+  saveState();
+  toast('Lançamento salvo!');limpar();rl();
+}
+function limpar(){['lcon','lmes','lsem'].forEach(id=>{const e=g(id);if(e)e.selectedIndex=0;});['lcid','lemp','lep','lfat','lfp'].forEach(id=>{const e=g(id);if(e)e.value='';});}
+function rl(){
+  const el=g('rlanc');if(!el)return;
+  if(!LANCS.length){el.innerHTML='<div class="es">Nenhum lançamento ainda</div>';return;}
+  el.innerHTML=`<div class="cd"><div class="tw"><table><thead><tr><th>Consultor</th><th>Mês</th><th>Sem.</th><th>Cidade/Turma</th><th>+1 Turma</th><th>Emp. únicas</th><th>Faturamento</th></tr></thead><tbody>${LANCS.slice(0,10).map(l=>`<tr><td class="nc">${l.n}</td><td>${MN[l.mes]}</td><td>S${l.sem+1}</td><td>${l.cid2||'—'}</td><td><span class="pl pt">+1</span></td><td style="color:var(--am)">${f(l.emp)}</td><td style="color:var(--gr)">${fR(l.fat)}</td></tr>`).join('')}</tbody></table></div></div>`;
+}
+
+// ─── RANKING ─────────────────────────────────────────────────────────────────
+function rr(){recalcGL();
+  const mes=parseInt(v('rmes'));const crit=v('rcrit');
+  const rows=CONS.map((c,i)=>{const r=gcr(c.id,mes);return{...r,id:c.id,n:c.n,i,at:adh(r.tr,r.tp),ae:adh(r.er,r.ep)};}).sort((a,b)=>crit==='fat'?b.fr-a.fr:crit==='emp'?b.er-a.er:crit==='tur'?b.tr-a.tr:b.at-a.at);
+  g('rtbody').innerHTML=rows.map((r,pos)=>{const pp=pos===0?'var(--am)':pos===1?'#8892aa':pos===2?'#cd7f32':'var(--tx3)';const pc=r.at>=90?'pg':r.at>=70?'pa':r.tr===0?'pz':'pr';return`<tr><td style="color:${pp};font-family:var(--fh);font-weight:700">${pos+1}</td><td class="nc">${r.n}</td><td>${f(r.tp)}</td><td style="color:var(--tl)">${f(r.tr)}</td><td>${f(r.ep)}</td><td style="color:var(--am)">${f(r.er)}</td><td style="font-size:11px">${fR(r.fp)}</td><td style="font-size:11px;color:var(--gr)">${fR(r.fr)}</td><td><span class="pl ${pc}">${r.at}%</span></td></tr>`;}).join('');
+  dc('cRF');dc('cRTE');
+  const t8=rows.slice(0,8);
+  CH['cRF']=new Chart(g('cRF'),{type:'bar',data:{labels:t8.map(r=>r.n.split(' ')[0]),datasets:[{label:'Fat.',data:t8.map(r=>r.fr),backgroundColor:t8.map((_,i)=>i<3?'#f7c44f33':'#4f8ef722'),borderColor:t8.map((_,i)=>i<3?'#f7c44f':'#4f8ef7'),borderWidth:1,borderRadius:3}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'#1a1e28'},ticks:{color:'#4a5570',font:{size:9},callback:v=>'R$'+Math.round(v/1000)+'k'}},y:{grid:{color:'transparent'},ticks:{color:'#8892aa',font:{size:10}}}}}});
+  CH['cRTE']=new Chart(g('cRTE'),{type:'bar',data:{labels:t8.map(r=>r.n.split(' ')[0]),datasets:[{label:'Turmas',data:t8.map(r=>r.tr),backgroundColor:'#0a2a2833',borderColor:'#2dd4bf',borderWidth:1,borderRadius:3,yAxisID:'y'},{label:'Empresas',data:t8.map(r=>r.er),type:'line',borderColor:'#f7c44f',backgroundColor:'transparent',pointBackgroundColor:'#f7c44f',pointRadius:3,tension:0.3,yAxisID:'y1'}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,labels:{color:'#8892aa',font:{size:10},padding:6}}},scales:{y:{grid:{color:'transparent'},ticks:{color:'#8892aa',font:{size:10}}},y1:{display:false}}}});
+}
+
+// ─── RELATÓRIOS ──────────────────────────────────────────────────────────────
+function rrel(){recalcGL();
+  let tp=0,ep=0,tr=0,er=0,fp=0,fr=0;GL.forEach(g=>{tp+=g.tp;ep+=g.ep;tr+=g.tr;er+=g.er;fp+=g.fp;fr+=g.fr;});
+  const aT=adh(tr,tp),aE=adh(er,ep);
+  g('rstats').innerHTML=`<div class="sc tl"><div class="sl">Turmas plan. (ano)</div><div class="sv">${f(tp)}</div><div class="ss">${aT}% realizado</div></div><div class="sc bl"><div class="sl">Turmas realizadas</div><div class="sv" style="color:${ac(aT)}">${f(tr)}</div><div class="ss ${aT>=70?'up':'dn'}">Ader.: ${aT}%</div></div><div class="sc am"><div class="sl">Empresas únicas plan.</div><div class="sv">${f(ep)}</div><div class="ss">${aE}% realizado</div></div><div class="sc gr"><div class="sl">Fat. realizado</div><div class="sv" style="font-size:16px">${fR(fr)}</div><div class="ss">${adh(fr,fp)}% de ${fR(fp)}</div></div>`;
+  g('rtbody2').innerHTML=MN.map((nm,i)=>{const gd=GL[i];const at=adh(gd.tr,gd.tp),ae=adh(gd.er,gd.ep);const pc=gd.tr>0?(at>=90?'pg':at>=70?'pa':'pr'):'pz';return`<tr><td style="color:var(--tx)">${nm}</td><td>${f(gd.tp)}</td><td style="color:var(--tl)">${f(gd.tr)}</td><td>${f(gd.ep)}</td><td style="color:var(--am)">${f(gd.er)}</td><td style="font-size:11px">${fR(gd.fp)}</td><td style="font-size:11px;color:var(--gr)">${fR(gd.fr)}</td><td><span class="pl ${pc}">${at}%</span></td><td><span class="pl ${ae>=90?'pg':ae>=70?'pa':gd.er===0?'pz':'pr'}">${ae}%</span></td><td><span class="pl ${pc}">${gd.tr>0?(at>=90?'Ótimo':at>=70?'Regular':'Baixo'):'Pendente'}</span></td></tr>`;}).join('');
+}
+function stab(id,btn){document.querySelectorAll('.tb').forEach(b=>b.classList.remove('on'));btn.classList.add('on');['tg','tt','tc'].forEach(t=>g(t).style.display='none');g(id).style.display='block';if(id==='tt')rtrim();}
+function rtrim(){
+  dc('cTrim');dc('cTrimE');
+  const tri=[[0,1,2],[3,4,5],[6,7,8],[9,10,11]],labs=['1º trim.','2º trim.','3º trim.','4º trim.'];
+  const tp=tri.map(ms=>ms.reduce((s,m)=>s+GL[m].tp,0)),tr=tri.map(ms=>ms.reduce((s,m)=>s+GL[m].tr,0));
+  const ep=tri.map(ms=>ms.reduce((s,m)=>s+GL[m].ep,0)),er=tri.map(ms=>ms.reduce((s,m)=>s+GL[m].er,0));
+  const co2={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,labels:{color:'#8892aa',font:{size:10}}}},scales:{x:{grid:{color:'#1a1e28'},ticks:{color:'#4a5570'}},y:{grid:{color:'#1a1e28'},ticks:{color:'#4a5570'}}}};
+  CH['cTrim']=new Chart(g('cTrim'),{type:'bar',data:{labels:labs,datasets:[{label:'Plan.',data:tp,backgroundColor:'#1a3a6a',borderColor:'#4f8ef7',borderWidth:1,borderRadius:3},{label:'Real.',data:tr,backgroundColor:'#1a3a2a',borderColor:'#3ecf8e',borderWidth:1,borderRadius:3}]},options:co2});
+  CH['cTrimE']=new Chart(g('cTrimE'),{type:'bar',data:{labels:labs,datasets:[{label:'Plan.',data:ep,backgroundColor:'#2a1a5a',borderColor:'#a78bfa',borderWidth:1,borderRadius:3},{label:'Real.',data:er,backgroundColor:'#3a2a0a',borderColor:'#f7c44f',borderWidth:1,borderRadius:3}]},options:co2});
+}
+function rc(){
+  const id=parseInt(v('rsel'))||0;const out=g('rcout');
+  if(!id){out.innerHTML='<div class="es">Selecione um consultor</div>';return;}
+  const c=CONS.find(x=>x.id===id);
+  const rows=MD[id]?MD[id].map((m,i)=>{const at=adh(m.tr,m.tp),ae=adh(m.er,m.ep);const pc=at>=90?'pg':at>=70?'pa':m.tr===0?'pz':'pr';return`<tr><td style="color:var(--tx)">${MN[i]}</td><td>${f(m.tp)}</td><td style="color:var(--tl)">${f(m.tr)}</td><td>${f(m.ep)}</td><td style="color:var(--am)">${f(m.er)}</td><td style="font-size:11px">${fR(m.fp)}</td><td style="font-size:11px;color:var(--gr)">${fR(m.fr)}</td><td><span class="pl ${pc}">${at}%</span></td><td><span class="pl ${ae>=90?'pg':ae>=70?'pa':m.er===0?'pz':'pr'}">${ae}%</span></td></tr>`;}).join(''):'';
+  out.innerHTML=`<div class="cd"><div style="font-family:var(--fh);font-size:15px;font-weight:700;margin-bottom:12px">${c?c.n:'Consultor'} — 2026</div><div class="tw"><table><thead><tr><th>Mês</th><th>Turmas Plan.</th><th>Turmas Real.</th><th>Emp. Plan.</th><th>Emp. Real.</th><th>Fat. Plan.</th><th>Fat. Real.</th><th>Ader. Turmas</th><th>Ader. Emp.</th></tr></thead><tbody>${rows}</tbody></table></div><div class="brow" style="margin-top:12px"><button class="bp" onclick="xcc(${id})">Exportar CSV</button></div></div>`;
+}
+
+// ─── EXPORTAR ────────────────────────────────────────────────────────────────
+function xcsv(){let csv='Mês,Turmas Plan.,Turmas Real.,Emp. Plan.,Emp. Real.,Fat. Plan.,Fat. Real.,Ader. Turmas %,Ader. Emp. %\n';MN.forEach((nm,i)=>{const gd=GL[i];csv+=`${nm},${gd.tp},${gd.tr},${gd.ep},${gd.er},${gd.fp},${gd.fr},${adh(gd.tr,gd.tp)}%,${adh(gd.er,gd.ep)}%\n`;});dl('relatorio-spe-2026.csv',csv,'text/csv');toast('CSV exportado!');}
+function xcc(id){const c=CONS.find(x=>x.id===id);let csv=`Consultor: ${c?c.n:id}\n\nMês,Turmas Plan.,Turmas Real.,Emp. Plan.,Emp. Real.,Fat. Plan.,Fat. Real.,Ader. Turmas %,Ader. Emp. %\n`;if(MD[id])MD[id].forEach((m,i)=>{csv+=`${MN[i]},${m.tp},${m.tr},${m.ep},${m.er},${m.fp},${m.fr},${adh(m.tr,m.tp)}%,${adh(m.er,m.ep)}%\n`;});dl(`${c?c.n.replace(/ /g,'-'):id}-2026.csv`,csv,'text/csv');toast('CSV exportado!');}
+function xjson(){const data={empresa:'Grupo Desafio',equipe:'SPE',ano:2026,geral:GL.map((gd,i)=>({mes:MN[i],...gd})),consultores:CONS.map(c=>({...c,meses:MD[c.id]?MD[c.id].map((m,i)=>({mes:MN[i],...m})):[]}))};dl('dados-spe-2026.json',JSON.stringify(data,null,2),'application/json');toast('JSON exportado!');}
+function dl(n,c,t){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\uFEFF'+c],{type:t}));a.download=n;a.click();}
+
+// ─── GESTÃO DE CONSULTORES ───────────────────────────────────────────────────
+let filtroGestao='';
+
+function renderGestao(fil){
+  if(fil!==undefined)filtroGestao=fil;
+  const lista=g('cons-lista');
+  const total=g('cons-total');
+  if(total)total.textContent=CONS.length+' consultor'+(CONS.length!==1?'es':'');
+  const filtered=CONS.filter(c=>c.n.toLowerCase().includes(filtroGestao.toLowerCase()));
+  lista.innerHTML=filtered.length?filtered.map((c,i)=>{
+    const col=AVC[CONS.indexOf(c)%AVC.length];
+    return`<div class="cons-item"><div class="av" style="background:${col}22;color:${col};width:32px;height:32px;font-size:11px;flex-shrink:0">${ini(c.n)}</div><div style="flex:1"><div class="cons-item-nome">${c.n}</div><div class="cons-item-meta">Meta: ${c.mt} turmas/ano · Ticket: ${fR(c.tk)}${c.cidade?' · '+c.cidade:''}</div></div><div class="cons-item-actions"><button class="icon-btn" onclick="editarCons(${c.id})">Editar</button><button class="icon-btn del" onclick="pedirExclusao(${c.id})">Remover</button></div></div>`;
+  }).join(''):'<div class="es">Nenhum consultor encontrado</div>';
+}
+
+function filtrarGestao(val){renderGestao(val);}
+
+function salvarConsultor(){
+  const nome=v('g-nome').trim();
+  const mt=parseInt(v('g-meta'))||12;
+  const tk=parseInt(v('g-ticket'))||3500;
+  const cidade=v('g-cidade').trim();
+  if(!nome){toast('Informe o nome do consultor','e');return;}
+  if(editId){
+    const c=CONS.find(x=>x.id===editId);
+    if(c){c.n=nome;c.mt=mt;c.tk=tk;c.cidade=cidade;}
+    toast('Consultor atualizado!');
+    cancelarEdicao();
+  } else {
+    const newId=CONS.length?Math.max(...CONS.map(c=>c.id))+1:1;
+    CONS.push({id:newId,n:nome,mt,tk,cidade});
+    MD[newId]=Array.from({length:12},()=>({tp:0,ep:0,tr:0,er:0,fp:0,fr:0}));
+    toast('Consultor adicionado!');
+    limparFormGestao();
+  }
+  saveState();
+  renderGestao();
+  popularSelects();
+}
+
+function editarCons(id){
+  const c=CONS.find(x=>x.id===id);if(!c)return;
+  editId=id;
+  g('g-nome').value=c.n;
+  g('g-meta').value=c.mt;
+  g('g-ticket').value=c.tk;
+  g('g-cidade').value=c.cidade||'';
+  g('form-gestao-title').textContent='Editar consultor';
+  g('btn-salvar-cons').textContent='Salvar alterações';
+  g('g-nome').focus();
+}
+
+function cancelarEdicao(){editId=null;limparFormGestao();g('form-gestao-title').textContent='Adicionar consultor';g('btn-salvar-cons').textContent='Adicionar';}
+function limparFormGestao(){['g-nome','g-meta','g-ticket','g-cidade'].forEach(id=>{const e=g(id);if(e)e.value='';});}
+
+function pedirExclusao(id){
+  delId=id;
+  const c=CONS.find(x=>x.id===id);
+  g('modal-del-nome').textContent=c?c.n:'este consultor';
+  g('modal-del').classList.add('on');
+}
+function fecharModal(){g('modal-del').classList.remove('on');delId=null;}
+function confirmarExclusao(){
+  if(!delId)return;
+  CONS=CONS.filter(c=>c.id!==delId);
+  delete MD[delId];
+  saveState();
+  fecharModal();
+  renderGestao();
+  popularSelects();
+  toast('Consultor removido');
+}
+
+function exportarConsultores(){
+  const txt=CONS.map(c=>`${c.n}\t${c.mt}\t${c.tk}\t${c.cidade||''}`).join('\n');
+  dl('consultores-spe.txt',txt,'text/plain');
+  toast('Lista exportada!');
+}
+
+function importarConsultores(input){
+  const file=input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    const linhas=e.target.result.split('\n').map(l=>l.trim()).filter(l=>l);
+    let adicionados=0;
+    linhas.forEach(linha=>{
+      const partes=linha.split('\t');
+      const nome=partes[0].trim();
+      if(!nome)return;
+      if(CONS.find(c=>c.n.toLowerCase()===nome.toLowerCase()))return;
+      const newId=CONS.length?Math.max(...CONS.map(c=>c.id))+1:1;
+      CONS.push({id:newId,n:nome,mt:parseInt(partes[1])||12,tk:parseInt(partes[2])||3500,cidade:partes[3]||''});
+      MD[newId]=Array.from({length:12},()=>({tp:0,ep:0,tr:0,er:0,fp:0,fr:0}));
+      adicionados++;
+    });
+    saveState();renderGestao();popularSelects();
+    toast(`${adicionados} consultor${adicionados!==1?'es':''} importado${adicionados!==1?'s':''}!`);
+    input.value='';
+  };
+  reader.readAsText(file,'UTF-8');
+}
+
+// ─── TOAST ───────────────────────────────────────────────────────────────────
+function toast(msg,t='ok'){
+  const el=g('toast');el.textContent=msg;
+  el.style.borderColor=t==='e'?'var(--rd)':'var(--gr)';
+  el.classList.add('on');setTimeout(()=>el.classList.remove('on'),3000);
+}
+
+// ─── PAINEL ANUAL ────────────────────────────────────────────────────────────
+let anualAberto = false;
+
+function toggleAnual(el) {
+  anualAberto = !anualAberto;
+  const normal = g('dash-normal');
+  const anual  = g('dash-anual');
+  const mc     = g('mc-ano');
+  if (anualAberto) {
+    normal.style.display = 'none';
+    anual.classList.add('on');
+    mc.style.background  = 'var(--pu)';
+    mc.style.color       = '#fff';
+    mc.style.borderColor = 'var(--pu)';
+    // desativa chips de mês
+    document.querySelectorAll('#mchips .mc:not(#mc-ano)').forEach(c => c.style.opacity = '.35');
+    renderAnual();
+  } else {
+    normal.style.display = '';
+    anual.classList.remove('on');
+    mc.style.background  = '';
+    mc.style.color       = 'var(--pu)';
+    mc.style.borderColor = 'var(--pu)';
+    document.querySelectorAll('#mchips .mc:not(#mc-ano)').forEach(c => c.style.opacity = '');
+  }
+}
+
+function renderAnual() {
+  recalcGL();
+  dc('cAnualT'); dc('cAnualF');
+
+  // ── Totais anuais
+  let totTp=0,totTr=0,totEp=0,totEr=0,totFp=0,totFr=0;
+  GL.forEach(gd=>{totTp+=gd.tp;totTr+=gd.tr;totEp+=gd.ep;totEr+=gd.er;totFp+=gd.fp;totFr+=gd.fr;});
+  const aT=adh(totTr,totTp), aE=adh(totEr,totEp), aF=adh(totFr,totFp);
+  g('anual-totais').innerHTML=`
+    <div class="anual-tot-item"><div class="anual-tot-val" style="color:var(--tl)">${f(totTp)}</div><div class="anual-tot-lbl">Turmas plan.</div></div>
+    <div class="anual-tot-item"><div class="anual-tot-val" style="color:var(--gr)">${f(totTr)}</div><div class="anual-tot-lbl">Turmas real.</div></div>
+    <div class="anual-tot-item"><div class="anual-tot-val" style="color:var(--am)">${f(totEr)}</div><div class="anual-tot-lbl">Empresas real.</div></div>
+    <div class="anual-tot-item"><div class="anual-tot-val" style="font-size:16px;color:var(--gr)">${fR(totFr)}</div><div class="anual-tot-lbl">Fat. realizado</div></div>
+    <div class="anual-tot-item"><div class="anual-tot-val" style="color:${ac(aT)}">${aT}%</div><div class="anual-tot-lbl">Aderência geral</div></div>`;
+
+  // ── Gráficos de linha
+  const coLinha = {
+    responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{display:false}},
+    scales:{
+      x:{grid:{color:'#1a1e28'},ticks:{color:'#4a5570',font:{size:10},autoSkip:false,maxRotation:0}},
+      y:{grid:{color:'#1a1e28'},ticks:{color:'#4a5570',font:{size:10}}}
+    }
+  };
+  CH['cAnualT'] = new Chart(g('cAnualT'),{type:'bar',data:{labels:MS,datasets:[
+    {label:'Plan.',data:GL.map(gd=>gd.tp),backgroundColor:'#1a3a6a',borderColor:'#4f8ef7',borderWidth:1,borderRadius:3},
+    {label:'Real.',data:GL.map(gd=>gd.tr),backgroundColor:'#1a3a2a',borderColor:'#3ecf8e',borderWidth:1,borderRadius:3}
+  ]},options:coLinha});
+  CH['cAnualF'] = new Chart(g('cAnualF'),{type:'bar',data:{labels:MS,datasets:[
+    {label:'Plan.',data:GL.map(gd=>gd.fp),backgroundColor:'#2a1a5a',borderColor:'#a78bfa',borderWidth:1,borderRadius:3},
+    {label:'Real.',data:GL.map(gd=>gd.fr),backgroundColor:'#3a2a0a',borderColor:'#f7c44f',borderWidth:1,borderRadius:3}
+  ]},options:{...coLinha,scales:{x:coLinha.scales.x,y:{...coLinha.scales.y,ticks:{color:'#4a5570',font:{size:10},callback:v=>'R$'+Math.round(v/1000)+'k'}}}}});
+
+  // ── Cards dos 12 meses
+  const grid = g('anual-meses-grid');
+  grid.innerHTML = GL.map((gd,i)=>{
+    const at=adh(gd.tr,gd.tp), ae=adh(gd.er,gd.ep), af=adh(gd.fr,gd.fp);
+    const isPend = gd.tr===0 && gd.er===0;
+    const cls    = isPend ? '' : at>=90 ? 'ok' : at>=70 ? 'med' : 'low';
+    const badge  = isPend
+      ? '<span class="anual-mes-badge badge-pend">Pendente</span>'
+      : at>=90
+        ? '<span class="anual-mes-badge badge-ok">'+at+'%</span>'
+        : at>=70
+          ? '<span class="anual-mes-badge badge-med">'+at+'%</span>'
+          : '<span class="anual-mes-badge badge-low">'+at+'%</span>';
+    const barColor = isPend ? 'var(--bd2)' : at>=90 ? 'var(--gr)' : at>=70 ? 'var(--am)' : 'var(--rd)';
+    const barW     = isPend ? 0 : Math.min(at,100);
+    return `<div class="anual-mes-card ${cls}">
+      <div class="anual-mes-nome">${MN[i]} ${badge}</div>
+      <div class="anual-mes-rows">
+        <div class="anual-row">
+          <span class="anual-row-lbl">Turmas</span>
+          <div class="anual-row-vals">
+            <span class="anual-row-real">${f(gd.tr)}</span>
+            <span class="anual-row-plan">/ ${f(gd.tp)}</span>
+          </div>
+        </div>
+        <div class="anual-row">
+          <span class="anual-row-lbl">Empresas</span>
+          <div class="anual-row-vals">
+            <span class="anual-row-real">${f(gd.er)}</span>
+            <span class="anual-row-plan">/ ${f(gd.ep)}</span>
+          </div>
+        </div>
+        <div class="anual-row">
+          <span class="anual-row-lbl">Faturamento</span>
+          <div class="anual-row-vals">
+            <span class="anual-row-real" style="font-size:10px">${fR(gd.fr)}</span>
+          </div>
+        </div>
+      </div>
+      <div class="anual-bar-wrap"><div class="anual-bar-fill" style="width:${barW}%;background:${barColor}"></div></div>
+    </div>`;
+  }).join('');
+
+  // ── Tabela detalhada
+  let sTp=0,sTr=0,sEp=0,sEr=0,sFp=0,sFr=0;
+  g('anual-tbody').innerHTML = GL.map((gd,i)=>{
+    const at=adh(gd.tr,gd.tp), ae=adh(gd.er,gd.ep), af=adh(gd.fr,gd.fp);
+    const pca = gd.tr>0?(at>=90?'pg':at>=70?'pa':'pr'):'pz';
+    const pce = gd.er>0?(ae>=90?'pg':ae>=70?'pa':'pr'):'pz';
+    const pcf = gd.fr>0?(af>=90?'pg':af>=70?'pa':'pr'):'pz';
+    sTp+=gd.tp;sTr+=gd.tr;sEp+=gd.ep;sEr+=gd.er;sFp+=gd.fp;sFr+=gd.fr;
+    return `<tr>
+      <td style="color:var(--tx);font-weight:500">${MN[i]}</td>
+      <td>${f(gd.tp)}</td><td style="color:var(--tl)">${f(gd.tr)}</td>
+      <td><span class="pl ${pca}">${at}%</span></td>
+      <td>${f(gd.ep)}</td><td style="color:var(--am)">${f(gd.er)}</td>
+      <td><span class="pl ${pce}">${ae}%</span></td>
+      <td style="font-size:11px">${fR(gd.fp)}</td>
+      <td style="font-size:11px;color:var(--gr)">${fR(gd.fr)}</td>
+      <td><span class="pl ${pcf}">${af}%</span></td>
+    </tr>`;
+  }).join('');
+
+  // ── Linha de totais no rodapé
+  const taT=adh(sTr,sTp), taE=adh(sEr,sEp), taF=adh(sFr,sFp);
+  const pca=taT>=90?'pg':taT>=70?'pa':'pr';
+  const pce=taE>=90?'pg':taE>=70?'pa':'pr';
+  const pcf=taF>=90?'pg':taF>=70?'pa':'pr';
+  g('anual-tfoot').innerHTML=`<tr style="background:var(--bg3)">
+    <td style="color:var(--tx);font-weight:700;font-family:var(--fh)">TOTAL</td>
+    <td style="font-weight:600">${f(sTp)}</td><td style="color:var(--tl);font-weight:600">${f(sTr)}</td>
+    <td><span class="pl ${pca}" style="font-weight:700">${taT}%</span></td>
+    <td style="font-weight:600">${f(sEp)}</td><td style="color:var(--am);font-weight:600">${f(sEr)}</td>
+    <td><span class="pl ${pce}" style="font-weight:700">${taE}%</span></td>
+    <td style="font-size:11px;font-weight:600">${fR(sFp)}</td>
+    <td style="font-size:11px;color:var(--gr);font-weight:600">${fR(sFr)}</td>
+    <td><span class="pl ${pcf}" style="font-weight:700">${taF}%</span></td>
+  </tr>`;
+}
+
+// ─── PLANEJAMENTO ANUAL ──────────────────────────────────────────────────────
+const PLAN_PERIODS=[
+  ['01 a 07','08 a 14','15 a 21','22 a 28','29 a 31'],
+  ['01 a 07','08 a 14','15 a 21','22 a 28','—'],
+  ['01 a 07','08 a 14','15 a 21','22 a 28','29 a 31'],
+  ['01 a 06','07 a 13','14 a 20','21 a 27','28 a 30'],
+  ['01 a 02','03 a 09','10 a 16','17 a 23','24 a 31'],
+  ['01 a 06','07 a 13','14 a 20','21 a 27','28 a 30'],
+  ['01 a 04','05 a 11','12 a 18','19 a 25','26 a 31'],
+  ['01','02 a 08','09 a 15','16 a 22','23 a 31'],
+  ['01 a 05','06 a 12','13 a 19','20 a 26','27 a 30'],
+  ['01 a 03','04 a 10','11 a 17','18 a 24','25 a 31'],
+  ['01 a 07','08 a 14','15 a 21','22 a 28','29 a 30'],
+  ['01 a 05','06 a 12','13 a 19','20 a 26','27 a 31'],
+];
+
+let planMesAtual=0;
+// planBuffer[mesIdx][semIdx] = {cidade, enc, tp, ep, fp}
+let planBuffer=Array.from({length:12},()=>Array.from({length:5},()=>({cidade:'',enc:'',tp:0,ep:0,fp:0})));
+
+function abrirPlanejamento(){
+  // Preenche select de consultores
+  const sel=g('plan-cons');
+  sel.innerHTML='<option value="">Selecione o consultor...</option>';
+  CONS.forEach(c=>sel.innerHTML+=`<option value="${c.id}">${c.n}</option>`);
+  // Sempre reseta o buffer e o mês ao abrir — nunca reutiliza sessão anterior
+  planBuffer=Array.from({length:12},()=>Array.from({length:5},()=>({cidade:'',enc:'',tp:0,ep:0,fp:0})));
+  planMesAtual=0;
+  g('plan-cons').value='';
+  g('plan-cons-info').textContent='';
+  const _tpa=document.getElementById('plan-tp-anual');
+  const _epa=document.getElementById('plan-ep-anual');
+  if(_tpa) _tpa.value='';
+  if(_epa) _epa.value='';
+  atualizarAbasMes();
+  renderPlanMes(0);
+  g('plan-overlay').classList.add('on');
+  document.body.style.overflow='hidden';
+}
+
+function fecharPlanejamento(){
+  g('plan-overlay').classList.remove('on');
+  document.body.style.overflow='';
+  saveState();
+}
+
+function onPlanConsChange(){
+  const cid=parseInt(g('plan-cons').value)||0;
+  const info=g('plan-cons-info');
+  if(!cid){info.textContent='';return;}
+  const c=CONS.find(x=>x.id===cid);
+  if(c) info.textContent=`Meta: ${c.mt} turmas/ano · Ticket: ${fR(c.tk)}`;
+  // Buffer começa zerado — o usuário preenche os valores do zero no modal.
+  // NÃO pré-populamos com dados do MD para evitar dupla contagem ao salvar.
+  planBuffer=Array.from({length:12},()=>Array.from({length:5},()=>({cidade:'',enc:'',tp:0,ep:0,fp:0})));
+  // Pré-preenche totais anuais se já existirem
+  const tpA=document.getElementById('plan-tp-anual');
+  const epA=document.getElementById('plan-ep-anual');
+  if(tpA) tpA.value = (anualTotais[cid]&&anualTotais[cid].tp)||'';
+  if(epA) epA.value = (anualTotais[cid]&&anualTotais[cid].ep)||'';
+  atualizarAbasMes();
+  renderPlanMes(planMesAtual);
+}
+
+function salvarBufMes(){
+  // Lê campos do mês atual do DOM para o buffer antes de mudar de mês
+  // tp não vem de input — é contado automaticamente como turmas com cidade preenchida
+  for(let s=0;s<5;s++){
+    const ci=g(`ps_${planMesAtual}_${s}_cidade`);
+    const en=g(`ps_${planMesAtual}_${s}_enc`);
+    const ep=g(`ps_${planMesAtual}_${s}_ep`);
+    const fp=g(`ps_${planMesAtual}_${s}_fp`);
+    if(ci) planBuffer[planMesAtual][s]={
+      cidade: ci.value,
+      enc:    en?en.value:'',
+      tp:     ci.value.trim() ? 1 : 0,  // 1 se tem turma identificada, 0 se vazio
+      ep:     parseFloat(ep?ep.value:0)||0,
+      fp:     parseFloat(fp?fp.value:0)||0
+    };
+  }
+}
+
+function planIrMes(idx,el){
+  salvarBufMes();
+  planMesAtual=idx;
+  document.querySelectorAll('.plan-mes-tab').forEach(t=>t.classList.remove('on'));
+  el.classList.add('on');
+  renderPlanMes(idx);
+}
+
+function renderPlanMes(mi){
+  const periodos=PLAN_PERIODS[mi];
+  const buf=planBuffer[mi];
+  // Totaliza buffer atual
+  let totEp=0,totFp=0,semCount=0;
+  buf.forEach(s=>{if(s.cidade&&s.cidade.trim())semCount++;totEp+=s.ep||0;totFp+=s.fp||0;});
+
+  let html=`<div class="plan-mes-title">${MN[mi]} <span style="font-size:11px;color:var(--tx3);font-weight:400">2026</span></div>`;
+
+  // Totais
+  html+=`<div class="plan-totais" id="plan-tot-${mi}">
+    <div class="plan-total-item"><div class="plan-total-val" style="color:var(--tl)" id="ptv-tur-${mi}">${semCount}</div><div class="plan-total-lbl">Turmas plan.</div></div>
+    <div class="plan-total-item"><div class="plan-total-val" style="color:var(--am)" id="ptv-emp-${mi}">${f(totEp)}</div><div class="plan-total-lbl">Empresas plan.</div></div>
+    <div class="plan-total-item"><div class="plan-total-val" style="color:var(--gr)" id="ptv-fat-${mi}">${fR(totFp)}</div><div class="plan-total-lbl">Fat. planejado</div></div>
+  </div>`;
+
+  // Semanas
+  html+='<div class="plan-semanas">';
+  for(let s=0;s<5;s++){
+    const b=buf[s];
+    const period=periodos[s];
+    if(period==='—'&&!b.cidade&&!b.tp) continue; // pula semana 5 vazia em fev
+    html+=`<div class="plan-semana">
+      <div class="plan-semana-header">
+        <span class="plan-semana-label">Semana ${s+1}</span>
+        <span class="plan-semana-period">${period}</span>
+      </div>
+      <div class="plan-semana-fields">
+        <div class="fm"><label>Cidade / Turma</label><input type="text" id="ps_${mi}_${s}_cidade" value="${b.cidade||''}" placeholder="Ex: Uberaba 18" oninput="recalcPlanTot(${mi})"></div>
+        <div class="fm"><label>Nº Encontro</label><input type="number" id="ps_${mi}_${s}_enc" value="${b.enc||''}" placeholder="1-7" min="1" max="7"></div>
+        <div class="fm"><label>Emp. únicas plan.</label><input type="number" id="ps_${mi}_${s}_ep" value="${b.ep||''}" placeholder="0" min="0" oninput="recalcPlanTot(${mi})"></div>
+      </div>
+      <div class="plan-semana-fields" style="margin-top:8px;grid-template-columns:1fr 1fr 1fr 1fr">
+        <div class="fm" style="grid-column:3/5"><label>Fat. planejado (R$)</label><input type="number" id="ps_${mi}_${s}_fp" value="${b.fp||''}" placeholder="0" min="0" oninput="recalcPlanTot(${mi})"></div>
+      </div>
+    </div>`;
+  }
+  html+='</div>';
+
+  // Navegação
+  html+=`<div class="plan-nav">
+    <button class="btn-plan-nav" onclick="planNavMes(-1)" ${mi===0?'disabled':''}>← Mês anterior</button>
+    <span style="font-size:12px;color:var(--tx3)">${mi+1} de 12</span>
+    <button class="btn-plan-nav" onclick="planNavMes(1)" ${mi===11?'disabled':''}>Próximo mês →</button>
+  </div>`;
+
+  g('plan-mes-body').innerHTML=html;
+}
+
+function recalcPlanTot(mi){
+  // tp = turmas com cidade preenchida; ep e fp = soma direta
+  let turmas=0, emp=0, fat=0;
+  for(let s=0;s<5;s++){
+    const cidade=(g(`ps_${mi}_${s}_cidade`)||{}).value||'';
+    const ep=parseFloat((g(`ps_${mi}_${s}_ep`)||{}).value)||0;
+    const fp=parseFloat((g(`ps_${mi}_${s}_fp`)||{}).value)||0;
+    if(cidade.trim()) turmas++;
+    emp+=ep; fat+=fp;
+  }
+  const vt=g(`ptv-tur-${mi}`),ve=g(`ptv-emp-${mi}`),vf=g(`ptv-fat-${mi}`);
+  if(vt)vt.textContent=turmas;
+  if(ve)ve.textContent=f(emp);
+  if(vf)vf.textContent=fR(fat);
+  atualizarAbasMes();
+}
+
+function planNavMes(dir){
+  salvarBufMes();
+  const novo=planMesAtual+dir;
+  if(novo<0||novo>11)return;
+  planMesAtual=novo;
+  document.querySelectorAll('.plan-mes-tab').forEach((t,i)=>{t.classList.toggle('on',i===novo);});
+  renderPlanMes(novo);
+}
+
+function atualizarAbasMes(){
+  document.querySelectorAll('.plan-mes-tab').forEach((t,i)=>{
+    const buf=planBuffer[i];
+    const temDado=buf.some(s=>(s.cidade&&s.cidade.trim())||s.ep||s.fp);
+    t.classList.toggle('tem-dados',temDado&&!t.classList.contains('on'));
+  });
+}
+
+function salvarPlanejamento(){
+  // Lê o mês visível no DOM para o buffer (captura digitações recentes)
+  salvarBufMes();
+
+  const cid=parseInt(g('plan-cons').value)||0;
+  if(!cid){toast('Selecione um consultor','e');return;}
+  if(!MD[cid])MD[cid]=Array.from({length:12},()=>({tp:0,ep:0,tr:0,er:0,fp:0,fr:0}));
+  let mesesAtualizados=0;
+  planBuffer.forEach((semanas,mi)=>{
+    // tp  = turmas únicas com cidade preenchida (1 por linha com nome)
+    // ep  = deduplica por cidade: mesma turma em semanas diferentes → maior ep
+    // fp  = soma direta
+    const epMap={}; let epSemNome=0, totTp=0, totFp=0;
+    semanas.forEach(s=>{
+      const key=(s.cidade||'').trim().toLowerCase();
+      totFp += s.fp||0;
+      if(key){
+        totTp++;
+        if(s.ep){ if(!epMap[key]||s.ep>epMap[key]) epMap[key]=s.ep; }
+      } else if(s.ep){
+        epSemNome += s.ep;
+      }
+    });
+    const totEp = Object.values(epMap).reduce((a,v)=>a+v,0) + epSemNome;
+    if(totTp||totEp||totFp){
+      MD[cid][mi].tp = totTp;
+      MD[cid][mi].ep = totEp;
+      MD[cid][mi].fp = totFp;
+      mesesAtualizados++;
+    }
+  });
+  // Salva totais anuais únicos informados diretamente pelo consultor
+  const tpAnual = parseInt(document.getElementById('plan-tp-anual').value)||0;
+  const epAnual = parseInt(document.getElementById('plan-ep-anual').value)||0;
+  if(!anualTotais[cid]) anualTotais[cid]={};
+  if(tpAnual) anualTotais[cid].tp = tpAnual;
+  if(epAnual) anualTotais[cid].ep = epAnual;
+  // Salva cópia do planBuffer para dedup anual
+  savedPlanBuffers[cid] = JSON.parse(JSON.stringify(planBuffer));
+  // Persiste no localStorage
+  saveState();
+  const c=CONS.find(x=>x.id===cid);
+  toast('Planejamento de '+(c?c.n:'consultor')+' salvo — '+mesesAtualizados+' mês'+(mesesAtualizados!==1?'es':'')+' atualizado'+(mesesAtualizados!==1?'s':'')+'!');
+  fecharPlanejamento();
+}
+
+// Fecha modal ao clicar no fundo
+g('plan-overlay').addEventListener('click',function(e){if(e.target===this)fecharPlanejamento();});
+
+// ─── BACKUP / RESTAURAÇÃO ────────────────────────────────────────────────────
+function backupCompleto(){
+  const data={
+    versao:'spe_v1',
+    exportado: new Date().toISOString(),
+    cons:  CONS,
+    md:    MD,
+    gl:    GL,
+    lancs: LANCS
+  };
+  const nome='spe-backup-'+new Date().toISOString().slice(0,10)+'.json';
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));
+  a.download=nome;
+  a.click();
+  toast('Backup salvo: '+nome);
+}
+
+function restaurarBackup(input){
+  const file=input.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      const data=JSON.parse(e.target.result);
+      if(!data.versao||!data.cons){toast('Arquivo inválido','e');return;}
+      // Restaura consultores
+      CONS.length=0;
+      data.cons.forEach(c=>CONS.push(c));
+      // Restaura MD
+      Object.keys(MD).forEach(k=>delete MD[k]);
+      if(data.md) Object.keys(data.md).forEach(id=>{MD[parseInt(id)]=data.md[id];});
+      // Restaura GL
+      if(data.gl && data.gl.length===12) data.gl.forEach((m,i)=>{GL[i]=m;});
+      // Restaura lançamentos
+      LANCS.length=0;
+      if(data.lancs) data.lancs.forEach(l=>LANCS.push(l));
+      // Salva no localStorage
+      saveState();
+      // Recarrega tudo
+      popularSelects();
+      rl();
+      rd();
+      rcl();
+      rr();
+      rrel();
+      renderGestao();
+      toast('Backup restaurado com sucesso!');
+    }catch(err){
+      toast('Erro ao restaurar: '+err.message,'e');
+    }
+    input.value='';
+  };
+  reader.readAsText(file,'UTF-8');
+}
+
+// ─── DEBUG ───────────────────────────────────────────────────────────────────
+function showDebug(){
+  const cid=parseInt(v('lcon'))||0;
+  if(!cid){toast('Selecione um consultor primeiro','e');return;}
+  const c=CONS.find(x=>x.id===cid);
+  const panel=g('debug-panel');
+  const body=g('debug-body');
+  panel.style.display='block';
+
+  // Mostra MD calculado
+  let html='<b style="color:var(--tl)">MD['+cid+'] — '+( c?c.n:'?')+' — valores salvos no MD:</b><br>';
+  html+='<table style="width:100%;border-collapse:collapse;margin-top:6px">';
+  html+='<tr style="color:var(--tx3)"><td style="padding:2px 8px">Mês</td><td>tp</td><td>ep</td><td>tr</td><td>er</td><td>fp</td><td>fr</td></tr>';
+  MN.forEach((nm,mi)=>{
+    const m=MD[cid]?MD[cid][mi]:{tp:0,ep:0,tr:0,er:0,fp:0,fr:0};
+    const hasData=m.tp||m.ep||m.tr||m.er;
+    html+=`<tr style="color:${hasData?'var(--tx)':'var(--tx3)'}">
+      <td style="padding:2px 8px">${nm}</td>
+      <td style="color:var(--tl)">${m.tp}</td>
+      <td style="color:var(--am)">${m.ep}</td>
+      <td style="color:var(--gr)">${m.tr}</td>
+      <td style="color:var(--gr)">${m.er}</td>
+      <td>${Math.round(m.fp).toLocaleString('pt-BR')}</td>
+      <td style="color:var(--gr)">${Math.round(m.fr).toLocaleString('pt-BR')}</td>
+    </tr>`;
+  });
+  // Totais
+  const tot=anualDedup(cid); // usa dedup anual
+  html+=`<tr style="border-top:1px solid var(--bd2);color:var(--tx);font-weight:700">
+    <td style="padding:4px 8px">TOTAL</td>
+    <td style="color:var(--tl)">${tot.tp}</td>
+    <td style="color:var(--am)">${tot.ep}</td>
+    <td style="color:var(--gr)">${tot.tr}</td>
+    <td style="color:var(--gr)">${tot.er}</td>
+    <td>${Math.round(tot.fp).toLocaleString('pt-BR')}</td>
+    <td style="color:var(--gr)">${Math.round(tot.fr).toLocaleString('pt-BR')}</td>
+  </tr>`;
+  html+='</table>';
+
+  // Mostra LANCS deste consultor
+  const lancs=LANCS.filter(l=>l.cid===cid);
+  if(lancs.length){
+    html+='<br><b style="color:var(--tl)">LANCS — lançamentos deste consultor ('+lancs.length+' total):</b><br>';
+    html+='<table style="width:100%;border-collapse:collapse;margin-top:6px">';
+    html+='<tr style="color:var(--tx3)"><td style="padding:2px 8px">Mês</td><td>Sem</td><td>Turma</td><td>Emp</td><td>Fat</td></tr>';
+    lancs.forEach(l=>{
+      html+=`<tr style="color:var(--tx2)">
+        <td style="padding:2px 8px">${MN[l.mes]}</td>
+        <td>S${(l.sem||0)+1}</td>
+        <td style="color:var(--ac)">${l.cid2||'<sem nome>'}</td>
+        <td style="color:var(--am)">${l.emp||0}</td>
+        <td>${Math.round(l.fat||0).toLocaleString('pt-BR')}</td>
+      </tr>`;
+    });
+    html+='</table>';
+  } else {
+    html+='<br><span style="color:var(--tx3)">Nenhum lançamento realizado para este consultor.</span>';
+  }
+
+  body.innerHTML=html;
+}
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
+popularSelects();
+rl();
+rd();
+rcl();
+rr();
+rrel();
+renderGestao();
+</script>
+
+
+</body></html>
